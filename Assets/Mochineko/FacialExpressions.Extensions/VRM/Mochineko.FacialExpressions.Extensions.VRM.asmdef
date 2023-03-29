@@ -1,10 +1,9 @@
 {
-    "name": "Mochineko.FacialExpressions.PhonemeLipSync",
+    "name": "Mochineko.FacialExpressions.Extensions.VRM",
     "rootNamespace": "",
     "references": [
-        "GUID:f51ebe6a0ceec4240a699833d6309b23",
-        "GUID:7b1a60e0fa826417992a87f2c504b2fe",
-        "GUID:3ed995982eec04b2e9d304b5b6242945"
+        "GUID:0e0dbf6ed860b4d57b738a3d1faef12d",
+        "GUID:e47c917724578cc43b5506c17a27e9a0"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

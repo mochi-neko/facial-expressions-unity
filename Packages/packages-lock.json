@@ -14,6 +14,46 @@
       "dependencies": {},
       "hash": "73d86259ce31ce7f4dfe1d028ea1c3edf96c23e4"
     },
+    "com.mochineko.relent.extensions.unitask": {
+      "version": "https://github.com/mochi-neko/Relent.git?path=/Assets/Mochineko/Relent.Extensions/UniTask#0.1.3",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.mochineko.relent.result": "https://github.com/mochi-neko/Relent.git?path=/Assets/Mochineko/Relent/Result#0.1.2",
+        "com.cysharp.unitask": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask"
+      },
+      "hash": "3369c27997a40d15a61d7acd679e75ea2793b12d"
+    },
+    "com.mochineko.relent.resilience": {
+      "version": "https://github.com/mochi-neko/Relent.git?path=/Assets/Mochineko/Relent/Resilience#0.1.3",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.mochineko.relent.uncertain-result": "https://github.com/mochi-neko/Relent.git?path=/Assets/Mochineko/Relent/UncertainResult#0.1.2"
+      },
+      "hash": "3369c27997a40d15a61d7acd679e75ea2793b12d"
+    },
+    "com.mochineko.relent.result": {
+      "version": "https://github.com/mochi-neko/Relent.git?path=/Assets/Mochineko/Relent/Result#0.1.3",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "3369c27997a40d15a61d7acd679e75ea2793b12d"
+    },
+    "com.mochineko.relent.uncertain-result": {
+      "version": "https://github.com/mochi-neko/Relent.git?path=/Assets/Mochineko/Relent/UncertainResult#0.1.3",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "3369c27997a40d15a61d7acd679e75ea2793b12d"
+    },
+    "com.mochineko.voicevox-api": {
+      "version": "https://github.com/mochi-neko/VOICEVOX-API-unity.git?path=/Assets/Mochineko/VOICEVOX_API#0.2.1",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "e1374ee22e0e537bcbdf93a65ede490095d742cc"
+    },
     "com.unity.editorcoroutines": {
       "version": "1.0.0",
       "depth": 1,
@@ -62,6 +102,13 @@
     },
     "com.unity.ide.vscode": {
       "version": "1.2.5",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.nuget.newtonsoft-json": {
+      "version": "3.0.2",
       "depth": 0,
       "source": "registry",
       "dependencies": {},

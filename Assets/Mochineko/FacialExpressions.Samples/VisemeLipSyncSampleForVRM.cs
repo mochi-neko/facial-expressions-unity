@@ -1,33 +1,25 @@
 #nullable enable
-using System;
 using System.IO;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using Mochineko.FacialExpressions.Extensions.VOICEVOX;
+using Mochineko.FacialExpressions.Extensions.VRM;
+using Mochineko.FacialExpressions.VisemeLipSync;
+using Mochineko.VOICEVOX_API.QueryCreation;
+using Newtonsoft.Json;
 using UnityEngine;
 using UniVRM10;
 using VRMShaders;
 
-namespace Mochineko.FacialExpressions.VisemeLipSync.Extensions.VRM
+namespace Mochineko.FacialExpressions.Samples
 {
     internal sealed class VisemeLipSyncSampleForVRM : MonoBehaviour
     {
         [SerializeField] private string path = string.Empty;
-        [SerializeField] private Viseme viseme = Viseme.aa;
-        [SerializeField, Range(0f, 1f)] private float weight = 0f;
+        [SerializeField] private string audioQueryJson = string.Empty;
         
-        private ILipMorpher? lipMorpher;
+        private SequentialLipAnimator? lipAnimator;
 
-        [ContextMenu(nameof(Morph))]
-        public void Morph()
-        {
-            if (lipMorpher is null)
-            {
-                return;
-            }
-            
-            lipMorpher.MorphInto(new LipSample(viseme, weight));
-        }
-        
         private async void Start()
         {
             var binary = await File.ReadAllBytesAsync(
@@ -38,7 +30,8 @@ namespace Mochineko.FacialExpressions.VisemeLipSync.Extensions.VRM
                 binary,
                 this.GetCancellationTokenOnDestroy());
 
-            lipMorpher = new VRMLipMorpher(instance.Runtime.Expression);
+            var lipMorpher = new VRMLipMorpher(instance.Runtime.Expression);
+            lipAnimator = new SequentialLipAnimator(lipMorpher);
         }
         
         private static async UniTask<Vrm10Instance> LoadVRMAsync(
@@ -57,6 +50,23 @@ namespace Mochineko.FacialExpressions.VisemeLipSync.Extensions.VRM
                 vrmMetaInformationCallback:null,
                 ct:cancellationToken
             );
+        }
+
+        [ContextMenu(nameof(Play))]
+        public void Play()
+        {
+            var audioQuery = JsonConvert.DeserializeObject<AudioQuery>(audioQueryJson);
+            if (audioQuery == null)
+            {
+                Debug.LogError("Failed to deserialize AudioQuery.");
+                return;
+            }
+            
+            var frames = AudioQueryConverter.Convert(audioQuery);
+
+            lipAnimator?
+                .AnimateAsync(frames, this.GetCancellationTokenOnDestroy())
+                .Forget();
         }
     }
 }

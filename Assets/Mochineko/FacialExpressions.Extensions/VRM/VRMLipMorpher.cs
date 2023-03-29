@@ -1,10 +1,11 @@
 #nullable enable
 using System.Collections.Generic;
+using Mochineko.FacialExpressions.VisemeLipSync;
 using UniVRM10;
 
-namespace Mochineko.FacialExpressions.VisemeLipSync.Extensions.VRM
+namespace Mochineko.FacialExpressions.Extensions.VRM
 {
-    internal sealed class VRMLipMorpher : ILipMorpher
+    public sealed class VRMLipMorpher : ILipMorpher
     {
         private static readonly IReadOnlyDictionary<Viseme, ExpressionKey> KeyMap
             = new Dictionary<Viseme, ExpressionKey>
@@ -25,10 +26,19 @@ namespace Mochineko.FacialExpressions.VisemeLipSync.Extensions.VRM
 
         public void MorphInto(LipSample lipSample)
         {
-            if (KeyMap.TryGetValue(lipSample.Viseme, out var key))
+            if (KeyMap.TryGetValue(lipSample.viseme, out var key))
             {
-                expression.SetWeight(key, lipSample.Weight);
+                expression.SetWeight(key, lipSample.weight);
             }
+        }
+
+        public void Reset()
+        {
+            MorphInto(new LipSample(Viseme.aa, 0f));
+            MorphInto(new LipSample(Viseme.ih, 0f));
+            MorphInto(new LipSample(Viseme.ou, 0f));
+            MorphInto(new LipSample(Viseme.E, 0f));
+            MorphInto(new LipSample(Viseme.oh, 0f));
         }
     }
 }
