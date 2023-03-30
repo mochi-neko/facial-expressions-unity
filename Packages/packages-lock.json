@@ -47,12 +47,26 @@
       "dependencies": {},
       "hash": "3369c27997a40d15a61d7acd679e75ea2793b12d"
     },
+    "com.mochineko.simple-audio-codec-unity": {
+      "version": "https://github.com/mochi-neko/simple-audio-codec-unity.git?path=/Assets/Mochineko/SimpleAudioCodec#0.1.2",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "cd448507b099c8a8e108407457653138cc42f411"
+    },
     "com.mochineko.voicevox-api": {
       "version": "https://github.com/mochi-neko/VOICEVOX-API-unity.git?path=/Assets/Mochineko/VOICEVOX_API#0.2.1",
       "depth": 0,
       "source": "git",
       "dependencies": {},
       "hash": "e1374ee22e0e537bcbdf93a65ede490095d742cc"
+    },
+    "com.naudio.core": {
+      "version": "https://github.com/mochi-neko/simple-audio-codec-unity.git?path=/Assets/NAudio/NAudio.Core#0.1.2",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "cd448507b099c8a8e108407457653138cc42f411"
     },
     "com.unity.editorcoroutines": {
       "version": "1.0.0",

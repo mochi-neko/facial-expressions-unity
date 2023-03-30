@@ -4,7 +4,7 @@ namespace Mochineko.FacialExpressions.VisemeLipSync
 {
     public interface ILipMorpher
     {
-        void MorphInto(LipSample lipSample);
+        void MorphInto(LipSample sample);
         void Reset();
     }
 }

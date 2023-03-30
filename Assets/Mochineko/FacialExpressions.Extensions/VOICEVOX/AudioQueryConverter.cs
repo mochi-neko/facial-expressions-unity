@@ -15,7 +15,7 @@ namespace Mochineko.FacialExpressions.Extensions.VOICEVOX
                 ["u"] = Viseme.ou, ["U"] = Viseme.ou,
                 ["e"] = Viseme.E, ["E"] = Viseme.E,
                 ["o"] = Viseme.oh, ["O"] = Viseme.oh,
-                ["N"] = Viseme.sil, ["pau"] = Viseme.sil,
+                ["pau"] = Viseme.sil, ["N"] = Viseme.nn,
             };
 
         public static IEnumerable<LipAnimationFrame> Convert(AudioQuery audioQuery)

@@ -9,44 +9,46 @@ namespace Mochineko.FacialExpressions.VisemeLipSync
 {
     public sealed class SequentialLipAnimator : ILipAnimator
     {
-        private readonly ILipMorpher lipMorpher;
+        private readonly ILipMorpher morpher;
 
         private CancellationTokenSource? cancellationTokenSource;
 
-        public SequentialLipAnimator(ILipMorpher lipMorpher)
+        public SequentialLipAnimator(ILipMorpher morpher)
         {
-            this.lipMorpher = lipMorpher;
+            this.morpher = morpher;
         }
 
         public async UniTask AnimateAsync(
-            IEnumerable<LipAnimationFrame> lipAnimationFrames,
+            IEnumerable<LipAnimationFrame> frames,
             CancellationToken cancellationToken)
         {
             cancellationTokenSource?.Cancel();
             cancellationTokenSource = CancellationTokenSource
                 .CreateLinkedTokenSource(cancellationToken);
             
-            lipMorpher.Reset();
+            morpher.Reset();
 
-            foreach (var lipAnimationFrame in lipAnimationFrames)
+            foreach (var frame in frames)
             {
                 if (cancellationTokenSource.IsCancellationRequested)
                 {
                     break;
                 }
 
-                lipMorpher.MorphInto(lipAnimationFrame.sample);
+                morpher.MorphInto(frame.sample);
 
                 var result = await RelentUniTask.Delay(
-                    TimeSpan.FromSeconds(lipAnimationFrame.durationSeconds),
+                    TimeSpan.FromSeconds(frame.durationSeconds),
                     cancellationToken: cancellationTokenSource.Token);
+                
+                // Cancelled
                 if (result.Failure)
                 {
                     break;
                 }
             }
             
-            lipMorpher.Reset();
+            morpher.Reset();
 
             cancellationTokenSource = null;
         }

@@ -2,15 +2,15 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace Mochineko.FacialExpressions.VisemeLipSync
+namespace Mochineko.FacialExpressions.Blink
 {
     [StructLayout(LayoutKind.Sequential)]
-    public readonly struct LipAnimationFrame : IEquatable<LipAnimationFrame>
+    public readonly struct EyelidAnimationFrame : IEquatable<EyelidAnimationFrame>
     {
-        public readonly LipSample sample;
+        public readonly EyelidSample sample;
         public readonly float durationSeconds;
 
-        public LipAnimationFrame(LipSample sample, float durationSeconds)
+        public EyelidAnimationFrame(EyelidSample sample, float durationSeconds)
         {
             if (durationSeconds < 0f)
             {
@@ -21,7 +21,7 @@ namespace Mochineko.FacialExpressions.VisemeLipSync
             this.durationSeconds = durationSeconds;
         }
 
-        public bool Equals(LipAnimationFrame other)
+        public bool Equals(EyelidAnimationFrame other)
         {
             return sample.Equals(other.sample)
                    && durationSeconds.Equals(other.durationSeconds);
@@ -29,7 +29,7 @@ namespace Mochineko.FacialExpressions.VisemeLipSync
 
         public override bool Equals(object? obj)
         {
-            return obj is LipAnimationFrame other && Equals(other);
+            return obj is EyelidAnimationFrame other && Equals(other);
         }
 
         public override int GetHashCode()

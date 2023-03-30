@@ -8,7 +8,7 @@ namespace Mochineko.FacialExpressions.VisemeLipSync
     public interface ILipAnimator
     {
         UniTask AnimateAsync(
-            IEnumerable<LipAnimationFrame> lipAnimationFrames,
+            IEnumerable<LipAnimationFrame> frames,
             CancellationToken cancellationToken);
     }
 }

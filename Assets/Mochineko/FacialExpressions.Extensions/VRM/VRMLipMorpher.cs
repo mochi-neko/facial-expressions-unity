@@ -7,6 +7,8 @@ namespace Mochineko.FacialExpressions.Extensions.VRM
 {
     public sealed class VRMLipMorpher : ILipMorpher
     {
+        private readonly Vrm10RuntimeExpression expression;
+        
         private static readonly IReadOnlyDictionary<Viseme, ExpressionKey> KeyMap
             = new Dictionary<Viseme, ExpressionKey>
             {
@@ -17,18 +19,20 @@ namespace Mochineko.FacialExpressions.Extensions.VRM
                 [Viseme.oh] = ExpressionKey.Ou,
             };
 
-        private readonly Vrm10RuntimeExpression expression;
-
         public VRMLipMorpher(Vrm10RuntimeExpression expression)
         {
             this.expression = expression;
         }
 
-        public void MorphInto(LipSample lipSample)
+        public void MorphInto(LipSample sample)
         {
-            if (KeyMap.TryGetValue(lipSample.viseme, out var key))
+            if (KeyMap.TryGetValue(sample.viseme, out var key))
             {
-                expression.SetWeight(key, lipSample.weight);
+                expression.SetWeight(key, sample.weight);
+            }
+            else if (sample.viseme is Viseme.sil or Viseme.nn)
+            {
+                Reset();
             }
         }
 
