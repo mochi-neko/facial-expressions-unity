@@ -30,6 +30,13 @@ namespace Mochineko.FacialExpressions.Extensions.VOICEVOX
             {
                 foreach (var mora in phase.Moras)
                 {
+                    if (mora.ConsonantLength != null)
+                    {
+                        frames.Add(new LipAnimationFrame(
+                            new LipSample(VisemeMap[mora.Vowel], weight: 1f),
+                            mora.ConsonantLength.Value));
+                    }
+                    
                     frames.Add(new LipAnimationFrame(
                         new LipSample(VisemeMap[mora.Vowel], weight: 1f),
                         mora.VowelLength));
@@ -43,7 +50,7 @@ namespace Mochineko.FacialExpressions.Extensions.VOICEVOX
                 {
                     frames.Add(new LipAnimationFrame(
                         new LipSample(VisemeMap[phase.PauseMora.Vowel], weight: 0f),
-                        durationSeconds: 0f));
+                        durationSeconds: phase.PauseMora.VowelLength));
                 }
             }
 

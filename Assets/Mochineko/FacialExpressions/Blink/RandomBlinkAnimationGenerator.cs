@@ -11,7 +11,7 @@ namespace Mochineko.FacialExpressions.Blink
         public static IEnumerable<EyelidAnimationFrame> Generate(
             Eyelid eyelid,
             int blinkCount,
-            float framePerSecond = 60f, float closingRate = 0.2f,
+            int framesPerSecond = 60, float closingRate = 0.2f,
             float beta = 10f, float a = -1f,
             float minDurationSeconds = 0.05f, float maxDurationSeconds = 0.2f,
             float minIntervalSeconds = 0.1f, float maxIntervalSeconds = 6f)
@@ -32,7 +32,7 @@ namespace Mochineko.FacialExpressions.Blink
                     maxDurationSeconds);
                 frames.AddRange(GenerateAnimationFramesOfOneBlink(
                     eyelid,
-                    framePerSecond,
+                    framesPerSecond,
                     duration,
                     closingRate,
                     beta,
@@ -51,12 +51,12 @@ namespace Mochineko.FacialExpressions.Blink
 
         private static IEnumerable<EyelidAnimationFrame> GenerateAnimationFramesOfOneBlink(
             Eyelid eyelid,
-            float framePerSecond, float duration, float closingRate,
+            int framesPerSecond, float duration, float closingRate,
             float beta, float a)
         {
-            if (framePerSecond <= 0f)
+            if (framesPerSecond <= 0)
             {
-                throw new ArgumentOutOfRangeException(nameof(framePerSecond));
+                throw new ArgumentOutOfRangeException(nameof(framesPerSecond));
             }
 
             if (duration <= 0f)
@@ -69,7 +69,7 @@ namespace Mochineko.FacialExpressions.Blink
                 throw new ArgumentOutOfRangeException(nameof(closingRate));
             }
 
-            int frameCount = (int)(duration * framePerSecond) + 1;
+            int frameCount = (int)(duration * framesPerSecond) + 1;
             var frames = new EyelidAnimationFrame[frameCount];
             var t = 0f;
             var tc = duration * closingRate;
