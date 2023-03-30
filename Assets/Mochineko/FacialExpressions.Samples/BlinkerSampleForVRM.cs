@@ -13,7 +13,7 @@ namespace Mochineko.FacialExpressions.Samples
     internal sealed class BlinkerSampleForVRM : MonoBehaviour
     {
         [SerializeField] private string path = string.Empty;
-        private SequentialSequentialEyelidAnimator? eyelidAnimator;
+        private SequentialEyelidAnimator? eyelidAnimator;
 
         private async void Start()
         {
@@ -26,7 +26,7 @@ namespace Mochineko.FacialExpressions.Samples
                 this.GetCancellationTokenOnDestroy());
 
             var eyelidMorper = new VRMEyelidMorpher(instance.Runtime.Expression);
-            eyelidAnimator = new SequentialSequentialEyelidAnimator(eyelidMorper);
+            eyelidAnimator = new SequentialEyelidAnimator(eyelidMorper);
 
             var frames = RandomBlinkAnimationGenerator.Generate(
                 Eyelid.Both, 

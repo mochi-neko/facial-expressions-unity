@@ -7,7 +7,7 @@ using Mochineko.Relent.Extensions.UniTask;
 
 namespace Mochineko.FacialExpressions.VisemeLipSync
 {
-    public sealed class SequentialLipAnimator : ILipAnimator
+    public sealed class SequentialLipAnimator : ISequentialLipAnimator
     {
         private readonly ILipMorpher morpher;
 
