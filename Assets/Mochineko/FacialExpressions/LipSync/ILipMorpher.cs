@@ -1,6 +1,6 @@
 #nullable enable
 
-namespace Mochineko.FacialExpressions.VisemeLipSync
+namespace Mochineko.FacialExpressions.LipSync
 {
     public interface ILipMorpher
     {

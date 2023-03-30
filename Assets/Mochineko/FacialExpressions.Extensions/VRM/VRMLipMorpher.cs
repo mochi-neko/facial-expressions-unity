@@ -1,6 +1,6 @@
 #nullable enable
 using System.Collections.Generic;
-using Mochineko.FacialExpressions.VisemeLipSync;
+using Mochineko.FacialExpressions.LipSync;
 using UniVRM10;
 
 namespace Mochineko.FacialExpressions.Extensions.VRM

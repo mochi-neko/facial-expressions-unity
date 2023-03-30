@@ -5,7 +5,7 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using Mochineko.Relent.Extensions.UniTask;
 
-namespace Mochineko.FacialExpressions.VisemeLipSync
+namespace Mochineko.FacialExpressions.LipSync
 {
     public sealed class SequentialLipAnimator : ISequentialLipAnimator
     {

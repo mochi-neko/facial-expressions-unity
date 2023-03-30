@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 
-namespace Mochineko.FacialExpressions.VisemeLipSync
+namespace Mochineko.FacialExpressions.LipSync
 {
     public interface ISequentialLipAnimator
     {

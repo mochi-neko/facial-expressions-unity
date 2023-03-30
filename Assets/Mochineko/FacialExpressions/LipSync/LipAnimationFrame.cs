@@ -2,7 +2,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace Mochineko.FacialExpressions.VisemeLipSync
+namespace Mochineko.FacialExpressions.LipSync
 {
     [StructLayout(LayoutKind.Sequential)]
     public readonly struct LipAnimationFrame : IEquatable<LipAnimationFrame>

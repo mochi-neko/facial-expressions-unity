@@ -4,7 +4,7 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using Mochineko.FacialExpressions.Extensions.VOICEVOX;
 using Mochineko.FacialExpressions.Extensions.VRM;
-using Mochineko.FacialExpressions.VisemeLipSync;
+using Mochineko.FacialExpressions.LipSync;
 using Mochineko.VOICEVOX_API.QueryCreation;
 using Newtonsoft.Json;
 using UnityEngine;
