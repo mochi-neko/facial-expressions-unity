@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace Mochineko.FacialExpressions.Blink
 {
@@ -15,21 +14,13 @@ namespace Mochineko.FacialExpressions.Blink
             float beta = 10f, float a = 1f,
             float minDurationSeconds = 0.05f, float maxDurationSeconds = 0.2f,
             float minIntervalSeconds = 0.1f, float maxIntervalSeconds = 6f,
-            float harmonicScale = 0.03f, float period = 3f
-        )
+            float harmonicScale = 0.03f, float period = 3f)
         {
             var frames = new List<EyelidAnimationFrame>();
 
-            var initialInterval = GaussianRandomInRange(
-                minIntervalSeconds,
-                maxIntervalSeconds);
-            frames.Add(new EyelidAnimationFrame(
-                new EyelidSample(eyelid, weight: 0f),
-                initialInterval));
-
             for (var i = 0; i < blinkCount; i++)
             {
-                var duration = GaussianRandomInRange(
+                var duration = RandomFunction.GaussianRandomInRange(
                     minDurationSeconds,
                     maxDurationSeconds);
                 frames.AddRange(GenerateBlinkAnimationFrames(
@@ -40,7 +31,7 @@ namespace Mochineko.FacialExpressions.Blink
                     beta,
                     a));
 
-                var interval = GaussianRandomInRange(
+                var interval = RandomFunction.GaussianRandomInRange(
                     minIntervalSeconds,
                     maxIntervalSeconds);
                 frames.AddRange(GenerateHarmonicIntervalAnimationFrames(
@@ -77,17 +68,10 @@ namespace Mochineko.FacialExpressions.Blink
             var t = 0f;
             var dt = duration / frameCount;
 
-            frames[0] = new EyelidAnimationFrame(
-                new EyelidSample(eyelid, weight: 0f),
-                dt);
-            t += dt;
-
-            for (var i = 1; i < frameCount - 1; i++)
+            for (var i = 0; i < frameCount - 1; i++)
             {
-                var phase = t / duration;
-                var weight = phase < closingRate
-                    ? BlinkFunction.ApproximatedClosingWeight(t / duration, closingRate, beta)
-                    : BlinkFunction.ApproximatedOpeningWeight(t / duration, closingRate, a);
+                var weight = BlinkFunction
+                    .ApproximatedWeight(t / duration, closingRate, beta, a);
 
                 frames[i] = new EyelidAnimationFrame(
                     new EyelidSample(eyelid, weight),
@@ -129,28 +113,6 @@ namespace Mochineko.FacialExpressions.Blink
                 duration - (t - dt));
 
             return frames;
-        }
-
-        public static float GaussianRandomInRange(float min, float max)
-        {
-            if (min > max)
-            {
-                throw new ArgumentOutOfRangeException(nameof(min));
-            }
-
-            return Mathf.Clamp(
-                GaussianRandom((min + max) / 2f, (max - min) / 6f),
-                min, max);
-        }
-
-        public static float GaussianRandom(float mu, float sigma)
-        {
-            var u1 = Random.value;
-            var u2 = Random.value;
-
-            var z = Mathf.Sqrt(-2f * Mathf.Log(u1)) * Mathf.Sin(2f * Mathf.PI * u2);
-
-            return mu + sigma * z;
         }
     }
 }
