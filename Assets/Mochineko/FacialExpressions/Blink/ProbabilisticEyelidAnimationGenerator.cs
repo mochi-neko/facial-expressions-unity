@@ -14,7 +14,9 @@ namespace Mochineko.FacialExpressions.Blink
             int framesPerSecond = 60, float closingRate = 0.2f,
             float beta = 10f, float a = 1f,
             float minDurationSeconds = 0.05f, float maxDurationSeconds = 0.2f,
-            float minIntervalSeconds = 0.1f, float maxIntervalSeconds = 6f)
+            float minIntervalSeconds = 0.1f, float maxIntervalSeconds = 6f,
+            float harmonicScale = 0.03f, float period = 3f
+        )
         {
             var frames = new List<EyelidAnimationFrame>();
 
@@ -30,7 +32,7 @@ namespace Mochineko.FacialExpressions.Blink
                 var duration = GaussianRandomInRange(
                     minDurationSeconds,
                     maxDurationSeconds);
-                frames.AddRange(GenerateAnimationFramesOfOneBlink(
+                frames.AddRange(GenerateBlinkAnimationFrames(
                     eyelid,
                     framesPerSecond,
                     duration,
@@ -41,15 +43,16 @@ namespace Mochineko.FacialExpressions.Blink
                 var interval = GaussianRandomInRange(
                     minIntervalSeconds,
                     maxIntervalSeconds);
-                frames.Add(new EyelidAnimationFrame(
-                    new EyelidSample(eyelid, weight: 0f),
-                    interval));
+                frames.AddRange(GenerateHarmonicIntervalAnimationFrames(
+                    eyelid,
+                    framesPerSecond, interval,
+                    harmonicScale, period));
             }
 
             return frames;
         }
 
-        private static IEnumerable<EyelidAnimationFrame> GenerateAnimationFramesOfOneBlink(
+        public static IEnumerable<EyelidAnimationFrame> GenerateBlinkAnimationFrames(
             Eyelid eyelid,
             int framesPerSecond, float duration, float closingRate,
             float beta, float a)
@@ -100,17 +103,47 @@ namespace Mochineko.FacialExpressions.Blink
             return frames;
         }
 
-        private static float GaussianRandomInRange(float min, float max)
+        public static IEnumerable<EyelidAnimationFrame> GenerateHarmonicIntervalAnimationFrames(
+            Eyelid eyelid,
+            int framesPerSecond, float duration,
+            float harmonicScale, float period)
+        {
+            int frameCount = (int)(duration * framesPerSecond) + 1;
+            var frames = new EyelidAnimationFrame[frameCount];
+            var t = 0f;
+            var dt = duration / frameCount;
+
+            for (var i = 0; i < frameCount - 1; i++)
+            {
+                var weight = harmonicScale * (Mathf.Sin(2f * Mathf.PI * t / period) + 1f) / 2f;
+
+                frames[i] = new EyelidAnimationFrame(
+                    new EyelidSample(eyelid, weight),
+                    dt);
+
+                t += dt;
+            }
+
+            frames[frameCount - 1] = new EyelidAnimationFrame(
+                new EyelidSample(eyelid, weight: 0f),
+                duration - (t - dt));
+
+            return frames;
+        }
+
+        public static float GaussianRandomInRange(float min, float max)
         {
             if (min > max)
             {
                 throw new ArgumentOutOfRangeException(nameof(min));
             }
-            
-            return GaussianRandom((min + max) / 2f, (max - min) / 6f);
+
+            return Mathf.Clamp(
+                GaussianRandom((min + max) / 2f, (max - min) / 6f),
+                min, max);
         }
 
-        private static float GaussianRandom(float mu, float sigma)
+        public static float GaussianRandom(float mu, float sigma)
         {
             var u1 = Random.value;
             var u2 = Random.value;
