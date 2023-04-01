@@ -7,7 +7,7 @@ using Mochineko.Relent.Extensions.UniTask;
 
 namespace Mochineko.FacialExpressions.Blink
 {
-    public sealed class SequentialEyelidAnimator : ISequentialEyelidAnimator
+    public sealed class SequentialEyelidAnimator : IEyelidAnimator
     {
         private readonly IEyelidMorpher morpher;
 

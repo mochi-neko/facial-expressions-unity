@@ -6,13 +6,13 @@ using Random = UnityEngine.Random;
 
 namespace Mochineko.FacialExpressions.Blink
 {
-    public static class RandomBlinkAnimationGenerator
+    public static class ProbabilisticEyelidAnimationGenerator
     {
         public static IEnumerable<EyelidAnimationFrame> Generate(
             Eyelid eyelid,
             int blinkCount,
             int framesPerSecond = 60, float closingRate = 0.2f,
-            float beta = 10f, float a = -1f,
+            float beta = 10f, float a = 1f,
             float minDurationSeconds = 0.05f, float maxDurationSeconds = 0.2f,
             float minIntervalSeconds = 0.1f, float maxIntervalSeconds = 6f)
         {
@@ -72,7 +72,6 @@ namespace Mochineko.FacialExpressions.Blink
             int frameCount = (int)(duration * framesPerSecond) + 1;
             var frames = new EyelidAnimationFrame[frameCount];
             var t = 0f;
-            var tc = duration * closingRate;
             var dt = duration / frameCount;
 
             frames[0] = new EyelidAnimationFrame(
@@ -82,9 +81,10 @@ namespace Mochineko.FacialExpressions.Blink
 
             for (var i = 1; i < frameCount - 1; i++)
             {
-                var weight = t < tc
-                    ? BlinkFunction.ApproximatedClosingWeight(t, tc, beta)
-                    : BlinkFunction.ApproximatedOpeningWeight(t, tc, duration, a);
+                var phase = t / duration;
+                var weight = phase < closingRate
+                    ? BlinkFunction.ApproximatedClosingWeight(t / duration, closingRate, beta)
+                    : BlinkFunction.ApproximatedOpeningWeight(t / duration, closingRate, a);
 
                 frames[i] = new EyelidAnimationFrame(
                     new EyelidSample(eyelid, weight),
@@ -95,7 +95,7 @@ namespace Mochineko.FacialExpressions.Blink
 
             frames[frameCount - 1] = new EyelidAnimationFrame(
                 new EyelidSample(eyelid, weight: 0f),
-                duration - t);
+                duration - (t - dt));
 
             return frames;
         }

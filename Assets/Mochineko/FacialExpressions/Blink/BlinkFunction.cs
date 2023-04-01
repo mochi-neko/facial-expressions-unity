@@ -8,9 +8,14 @@ namespace Mochineko.FacialExpressions.Blink
     {
         public static float ApproximatedClosingWeight(float t, float tc, float beta)
         {
-            if (t < 0f)
+            if (t is < 0f or > 1f)
             {
                 throw new ArgumentOutOfRangeException(nameof(t));
+            }
+            
+            if (tc is < 0f or > 1f)
+            {
+                throw new ArgumentOutOfRangeException(nameof(tc));
             }
 
             if (t > tc)
@@ -27,21 +32,21 @@ namespace Mochineko.FacialExpressions.Blink
             return (Mathf.Exp(beta * t) - 1f) / (Mathf.Exp(beta * tc) - 1f);
         }
         
-        public static float ApproximatedOpeningWeight(float t, float tc, float to, float a)
+        public static float ApproximatedOpeningWeight(float t, float tc, float a)
         {
+            if (t is < 0f or > 1f)
+            {
+                throw new ArgumentOutOfRangeException(nameof(t));
+            }
+
+            if (tc is < 0f or > 1f)
+            {
+                throw new ArgumentOutOfRangeException(nameof(tc));
+            }
+            
             if (t < tc)
             {
                 throw new ArgumentOutOfRangeException(nameof(t));
-            }
-
-            if (t > to)
-            {
-                throw new ArgumentOutOfRangeException(nameof(t));
-            }
-
-            if (tc > to)
-            {
-                throw new ArgumentOutOfRangeException(nameof(tc));
             }
 
             if (a is < -1f or > 1f)
@@ -49,8 +54,8 @@ namespace Mochineko.FacialExpressions.Blink
                 throw new ArgumentOutOfRangeException(nameof(a));
             }
 
-            // f(t) = a (t - t_c)(t_o - t) + \frac{t_o - t}{t_o - t_c} \ & \ (t_c \le t \le t_o)
-            return a * (t - tc) * (to - t) + (to - t) / (to - tc);
+            // f(t) = - a (t - t_c)(1 - t) + \frac{1 - t}{1 - t_c} \ & \ (t_c \le t \le 1)
+            return -a * (t - tc) * (1f - t) + (1f - t) / (1f - tc);
         }
     }
 }

@@ -30,6 +30,18 @@ namespace Mochineko.FacialExpressions.Extensions.VRM
             }
         }
 
+        public float GetWeightOf(Eyelid eyelid)
+        {
+            if (KeyMap.TryGetValue(eyelid, out var key))
+            {
+                return expression.GetWeight(key);
+            }
+            else
+            {
+                return 0f;
+            }
+        }
+
         public void Reset()
         {
             MorphInto(new EyelidSample(Eyelid.Both, weight: 0f));

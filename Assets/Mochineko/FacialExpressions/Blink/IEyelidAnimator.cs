@@ -5,7 +5,7 @@ using Cysharp.Threading.Tasks;
 
 namespace Mochineko.FacialExpressions.Blink
 {
-    public interface ISequentialEyelidAnimator
+    public interface IEyelidAnimator
     {
         UniTask AnimateAsync(
             IEnumerable<EyelidAnimationFrame> frames,
