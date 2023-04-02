@@ -66,9 +66,6 @@ namespace Mochineko.FacialExpressions.Samples
             var eyelidFrames = ProbabilisticEyelidAnimationGenerator.Generate(
                 Eyelid.Both,
                 blinkCount: 20);
-            // var eyelidFrames = LinearEyelidAnimationGenerator.Generate(
-            //     Eyelid.Both,
-            //     blinkCount: 20);
 
             eyelidAnimator.AnimateAsync(
                     eyelidFrames,

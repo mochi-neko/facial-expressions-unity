@@ -10,15 +10,16 @@ namespace Mochineko.FacialExpressions.Extensions.VOICEVOX
         private static readonly IReadOnlyDictionary<string, Viseme> VisemeMap
             = new Dictionary<string, Viseme>
             {
-                // Silences
-                ["pau"] = Viseme.sil, ["cl"] = Viseme.sil, ["y"] = Viseme.sil,
                 // Vowels
+                ["pau"] = Viseme.sil, ["cl"] = Viseme.sil,
                 ["a"] = Viseme.aa, ["A"] = Viseme.aa,
                 ["i"] = Viseme.ih, ["I"] = Viseme.ih,
                 ["u"] = Viseme.ou, ["U"] = Viseme.ou,
                 ["e"] = Viseme.E, ["E"] = Viseme.E,
                 ["o"] = Viseme.oh, ["O"] = Viseme.oh,
+                ["N"] = Viseme.nn,
                 // Consonants
+                ["y"] = Viseme.sil,
                 ["p"] = Viseme.PP, ["py"] = Viseme.PP, ["b"] = Viseme.PP, ["by"] = Viseme.PP, ["m"] = Viseme.PP,
                 ["my"] = Viseme.PP,
                 ["f"] = Viseme.FF, ["v"] = Viseme.FF, ["w"] = Viseme.FF, ["h"] = Viseme.FF, ["hy"] = Viseme.FF,
@@ -26,7 +27,7 @@ namespace Mochineko.FacialExpressions.Extensions.VOICEVOX
                 ["k"] = Viseme.kk, ["kw"] = Viseme.kk, ["ky"] = Viseme.kk, ["g"] = Viseme.kk, ["gy"] = Viseme.kk,
                 ["ch"] = Viseme.CH, ["sh"] = Viseme.CH, ["j"] = Viseme.CH,
                 ["z"] = Viseme.SS, ["s"] = Viseme.SS,
-                ["N"] = Viseme.nn, ["n"] = Viseme.nn, ["ny"] = Viseme.nn,
+                ["n"] = Viseme.nn, ["ny"] = Viseme.nn,
                 ["r"] = Viseme.RR, ["ry"] = Viseme.RR,
             };
 
@@ -37,15 +38,21 @@ namespace Mochineko.FacialExpressions.Extensions.VOICEVOX
 
             frames.Add(new LipAnimationFrame(
                 new LipSample(Viseme.sil, weight: 0f),
-                audioQuery.PrePhonemeLength * audioQuery.SpeedScale));
+                audioQuery.PrePhonemeLength / audioQuery.SpeedScale));
 
             foreach (var phase in audioQuery.AccentPhases)
             {
                 foreach (var mora in phase.Moras)
                 {
+                    var duration = mora.VowelLength;
+                    if (mora.ConsonantLength is not null)
+                    {
+                        duration += mora.ConsonantLength.Value;
+                    }
+                    
                     frames.Add(new LipAnimationFrame(
                         new LipSample(VisemeMap[mora.Vowel], weight: 1f),
-                        mora.VowelLength + mora.ConsonantLength ?? 0f));
+                        duration / audioQuery.SpeedScale));
 
                     frames.Add(new LipAnimationFrame(
                         new LipSample(VisemeMap[mora.Vowel], weight: 0f),
@@ -56,13 +63,13 @@ namespace Mochineko.FacialExpressions.Extensions.VOICEVOX
                 {
                     frames.Add(new LipAnimationFrame(
                         new LipSample(Viseme.sil, weight: 0f),
-                        durationSeconds: phase.PauseMora.VowelLength * audioQuery.SpeedScale));
+                        durationSeconds: phase.PauseMora.VowelLength / audioQuery.SpeedScale));
                 }
             }
 
             frames.Add(new LipAnimationFrame(
                 new LipSample(Viseme.sil, weight: 0f),
-                audioQuery.PostPhonemeLength * audioQuery.SpeedScale));
+                audioQuery.PostPhonemeLength / audioQuery.SpeedScale));
 
             return frames;
         }
