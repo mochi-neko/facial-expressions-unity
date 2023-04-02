@@ -30,19 +30,27 @@ namespace Mochineko.FacialExpressions.Extensions.VRM
             {
                 expression.SetWeight(key, sample.weight);
             }
-            else if (sample.viseme is Viseme.sil or Viseme.nn)
+        }
+
+        public float GetWeightOf(Viseme viseme)
+        {
+            if (KeyMap.TryGetValue(viseme, out var key))
             {
-                Reset();
+                return expression.GetWeight(key);
+            }
+            else
+            {
+                return 0f;
             }
         }
 
         public void Reset()
         {
-            MorphInto(new LipSample(Viseme.aa, 0f));
-            MorphInto(new LipSample(Viseme.ih, 0f));
-            MorphInto(new LipSample(Viseme.ou, 0f));
-            MorphInto(new LipSample(Viseme.E, 0f));
-            MorphInto(new LipSample(Viseme.oh, 0f));
+            expression.SetWeight(ExpressionKey.Aa, 0f);
+            expression.SetWeight(ExpressionKey.Ih, 0f);
+            expression.SetWeight(ExpressionKey.Ou, 0f);
+            expression.SetWeight(ExpressionKey.Ee, 0f);
+            expression.SetWeight(ExpressionKey.Oh, 0f);
         }
     }
 }

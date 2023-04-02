@@ -28,9 +28,10 @@ namespace Mochineko.FacialExpressions.Samples
         [SerializeField] private string text = string.Empty;
         [SerializeField] private int speakerID;
         [SerializeField] private AudioSource? audioSource = null;
-
-        private SequentialLipAnimator? lipAnimator;
-        private SequentialEyelidAnimator? eyelidAnimator;
+        [SerializeField] private bool skipSpeechSynthesis = false;
+        
+        private ILipAnimator? lipAnimator;
+        private IEyelidAnimator? eyelidAnimator;
         private AudioClip? audioClip;
 
         private readonly IPolicy<AudioQuery> queryCreationPolicy
@@ -46,6 +47,8 @@ namespace Mochineko.FacialExpressions.Samples
 
         private async void Start()
         {
+            VoiceVoxBaseURL.BaseURL = "http://127.0.0.1:50021";
+            
             var binary = await File.ReadAllBytesAsync(
                 path,
                 this.GetCancellationTokenOnDestroy());
@@ -55,14 +58,17 @@ namespace Mochineko.FacialExpressions.Samples
                 this.GetCancellationTokenOnDestroy());
 
             var lipMorpher = new VRMLipMorpher(instance.Runtime.Expression);
-            lipAnimator = new SequentialLipAnimator(lipMorpher);
+            lipAnimator = new FollowingLipAnimator(lipMorpher);
 
             var eyelidMorper = new VRMEyelidMorpher(instance.Runtime.Expression);
             eyelidAnimator = new SequentialEyelidAnimator(eyelidMorper);
 
-            var eyelidFrames = RandomBlinkAnimationGenerator.Generate(
+            var eyelidFrames = ProbabilisticEyelidAnimationGenerator.Generate(
                 Eyelid.Both,
                 blinkCount: 20);
+            // var eyelidFrames = LinearEyelidAnimationGenerator.Generate(
+            //     Eyelid.Both,
+            //     blinkCount: 20);
 
             eyelidAnimator.AnimateAsync(
                     eyelidFrames,
@@ -194,38 +200,45 @@ namespace Mochineko.FacialExpressions.Samples
                 throw new UncertainResultPatternMatchException(nameof(synthesisResult));
             }
 
-            try
+            if (!skipSpeechSynthesis)
             {
-                // Decode WAV data to AudioClip by SimpleAudioCodec WAV decoder.
-                audioClip = await WaveDecoder.DecodeBlockByBlockAsync(
-                    stream: stream,
-                    fileName: "Synthesis.wav",
-                    cancellationToken: cancellationToken);
+                try
+                {
+                    // Decode WAV data to AudioClip by SimpleAudioCodec WAV decoder.
+                    audioClip = await WaveDecoder.DecodeBlockByBlockAsync(
+                        stream: stream,
+                        fileName: "Synthesis.wav",
+                        cancellationToken: cancellationToken);
 
-                Debug.Log($"[VOICEVOX_API.Samples] Succeeded to decode audio, " +
-                          $"samples:{audioClip.samples}, " +
-                          $"frequency:{audioClip.frequency}, " +
-                          $"channels:{audioClip.channels}, " +
-                          $"length:{audioClip.length}.");
+                    Debug.Log($"[VOICEVOX_API.Samples] Succeeded to decode audio, " +
+                              $"samples:{audioClip.samples}, " +
+                              $"frequency:{audioClip.frequency}, " +
+                              $"channels:{audioClip.channels}, " +
+                              $"length:{audioClip.length}.");
+                }
+                catch (Exception e)
+                {
+                    Debug.LogException(e);
+                    return;
+                }
+                finally
+                {
+                    await stream.DisposeAsync();
+                }
+                
+                await UniTask.SwitchToMainThread(cancellationToken);
+
+                // Play AudioClip.
+                audioSource.clip = audioClip;
+                audioSource.PlayDelayed(0.1f);
             }
-            catch (Exception e)
-            {
-                Debug.LogException(e);
-                return;
-            }
-            finally
-            {
-                await stream.DisposeAsync();
-            }
+            
+            var lipFrames = AudioQueryConverter.ConvertToSequentialAnimationFrames(audioQuery);
 
-            var lipFrames = AudioQueryConverter.Convert(audioQuery);
-
-            await UniTask.SwitchToMainThread(cancellationToken);
-
-            // Play AudioClip.
-            audioSource.clip = audioClip;
-            audioSource.Play();
-
+            await UniTask.Delay(
+                TimeSpan.FromSeconds(0.1f),
+                cancellationToken:cancellationToken);
+            
             lipAnimator
                 ?.AnimateAsync(lipFrames, cancellationToken)
                 .Forget();

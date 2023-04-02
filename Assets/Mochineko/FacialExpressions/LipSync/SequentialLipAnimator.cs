@@ -7,11 +7,11 @@ using Mochineko.Relent.Extensions.UniTask;
 
 namespace Mochineko.FacialExpressions.LipSync
 {
-    public sealed class SequentialLipAnimator : ISequentialLipAnimator
+    public sealed class SequentialLipAnimator : ILipAnimator
     {
         private readonly ILipMorpher morpher;
 
-        private CancellationTokenSource? cancellationTokenSource;
+        private CancellationTokenSource? animationCanceller;
 
         public SequentialLipAnimator(ILipMorpher morpher)
         {
@@ -22,15 +22,15 @@ namespace Mochineko.FacialExpressions.LipSync
             IEnumerable<LipAnimationFrame> frames,
             CancellationToken cancellationToken)
         {
-            cancellationTokenSource?.Cancel();
-            cancellationTokenSource = CancellationTokenSource
+            animationCanceller?.Cancel();
+            animationCanceller = CancellationTokenSource
                 .CreateLinkedTokenSource(cancellationToken);
             
             morpher.Reset();
 
             foreach (var frame in frames)
             {
-                if (cancellationTokenSource.IsCancellationRequested)
+                if (animationCanceller.IsCancellationRequested)
                 {
                     break;
                 }
@@ -39,7 +39,7 @@ namespace Mochineko.FacialExpressions.LipSync
 
                 var result = await RelentUniTask.Delay(
                     TimeSpan.FromSeconds(frame.durationSeconds),
-                    cancellationToken: cancellationTokenSource.Token);
+                    cancellationToken: animationCanceller.Token);
                 
                 // Cancelled
                 if (result.Failure)
@@ -50,7 +50,7 @@ namespace Mochineko.FacialExpressions.LipSync
             
             morpher.Reset();
 
-            cancellationTokenSource = null;
+            animationCanceller = null;
         }
     }
 }

@@ -29,6 +29,18 @@ namespace Mochineko.FacialExpressions.LipSync
             }
         }
 
+        public float GetWeightOf(Viseme viseme)
+        {
+            if (idMap.TryGetValue(viseme, out var id))
+            {
+                return animator.GetFloat(id);
+            }
+            else
+            {
+                return 0f;
+            }
+        }
+
         public void Reset()
         {
             MorphInto(new LipSample(Viseme.aa, 0f));

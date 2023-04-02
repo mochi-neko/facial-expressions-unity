@@ -5,7 +5,7 @@ using Cysharp.Threading.Tasks;
 
 namespace Mochineko.FacialExpressions.LipSync
 {
-    public interface ISequentialLipAnimator
+    public interface ILipAnimator
     {
         UniTask AnimateAsync(
             IEnumerable<LipAnimationFrame> frames,
