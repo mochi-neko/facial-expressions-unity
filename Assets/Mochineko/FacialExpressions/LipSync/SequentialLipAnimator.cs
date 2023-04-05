@@ -7,6 +7,9 @@ using Mochineko.Relent.Extensions.UniTask;
 
 namespace Mochineko.FacialExpressions.LipSync
 {
+    /// <summary>
+    /// A lip animator that animates lip sequentially.
+    /// </summary>
     public sealed class SequentialLipAnimator : ILipAnimator
     {
         private readonly ILipMorpher morpher;

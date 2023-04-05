@@ -5,6 +5,9 @@ using Random = UnityEngine.Random;
 
 namespace Mochineko.FacialExpressions.Blink
 {
+    /// <summary>
+    /// Provides random functions.
+    /// </summary>
     public static class RandomFunction
     {
         public static float GaussianRandomInRange(float min, float max)

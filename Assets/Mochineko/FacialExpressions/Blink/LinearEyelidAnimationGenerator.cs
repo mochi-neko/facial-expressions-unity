@@ -5,8 +5,23 @@ using Random = UnityEngine.Random;
 
 namespace Mochineko.FacialExpressions.Blink
 {
+    /// <summary>
+    /// A generator of <see cref="EyelidAnimationFrame"/> for linear eyelid animation.
+    /// </summary>
     public static class LinearEyelidAnimationGenerator
     {
+        /// <summary>
+        /// Generates a collection of <see cref="EyelidAnimationFrame"/> for some blinking.
+        /// </summary>
+        /// <param name="eyelid"></param>
+        /// <param name="blinkCount"></param>
+        /// <param name="framesPerSecond"></param>
+        /// <param name="closingRate"></param>
+        /// <param name="minDurationSeconds"></param>
+        /// <param name="maxDurationSeconds"></param>
+        /// <param name="minIntervalSeconds"></param>
+        /// <param name="maxIntervalSeconds"></param>
+        /// <returns></returns>
         public static IEnumerable<EyelidAnimationFrame> Generate(
             Eyelid eyelid,
             int blinkCount,
@@ -34,6 +49,15 @@ namespace Mochineko.FacialExpressions.Blink
             return frames;
         }
 
+        /// <summary>
+        /// Generates a collection of <see cref="EyelidAnimationFrame"/> for one blinking.
+        /// </summary>
+        /// <param name="eyelid"></param>
+        /// <param name="framesPerSecond"></param>
+        /// <param name="duration"></param>
+        /// <param name="closingRate"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
         public static IEnumerable<EyelidAnimationFrame> GenerateBlinkAnimationFrames(
             Eyelid eyelid,
             int framesPerSecond, float duration, float closingRate)

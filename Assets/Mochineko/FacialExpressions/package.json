@@ -1,0 +1,11 @@
+{
+  "name": "com.mochineko.facial-expressions",
+  "version": "0.1.0",
+  "displayName": "Facial Expressions",
+  "description": "Facial expressions for 3D models.",
+  "unity": "2021.3",
+  "author": {
+    "name": "Mochineko",
+    "email": "t.o.e.4315@gmail.com"
+  }
+}

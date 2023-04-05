@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace Mochineko.FacialExpressions.Blink
 {
+    /// <summary>
+    /// A simple implementation of <see cref="IEyelidMorpher"/> for <see cref="Animation"/>.
+    /// </summary>
     public sealed class AnimatorEyelidMorpher : IEyelidMorpher
     {
         private readonly Animator animator;

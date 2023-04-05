@@ -14,15 +14,16 @@ using Mochineko.VOICEVOX_API;
 using Mochineko.VOICEVOX_API.QueryCreation;
 using Mochineko.VOICEVOX_API.Synthesis;
 using Newtonsoft.Json;
-using NUnit.Framework;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UniVRM10;
 using VRMShaders;
 using Object = UnityEngine.Object;
 
 namespace Mochineko.FacialExpressions.Samples
 {
-    internal sealed class SampleForVoicevoxAndVRM : MonoBehaviour
+    // ReSharper disable once InconsistentNaming
+    internal sealed class SampleForVoiceVoxAndVRM : MonoBehaviour
     {
         [SerializeField] private string path = string.Empty;
         [SerializeField] private string text = string.Empty;

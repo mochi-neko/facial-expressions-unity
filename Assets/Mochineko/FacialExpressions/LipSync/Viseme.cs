@@ -3,7 +3,8 @@
 namespace Mochineko.FacialExpressions.LipSync
 {
     /// <summary>
-    /// Any of a group of speech sounds that look the same defined by https://visagetechnologies.com/uploads/2012/08/MPEG-4FBAOverview.pdf
+    /// Any of a group of speech sounds that look the same
+    ///  defined by https://visagetechnologies.com/uploads/2012/08/MPEG-4FBAOverview.pdf
     /// </summary>
     // ReSharper disable InconsistentNaming
     public enum Viseme : byte

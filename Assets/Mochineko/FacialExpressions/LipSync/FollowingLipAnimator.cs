@@ -8,6 +8,9 @@ using UnityEngine;
 
 namespace Mochineko.FacialExpressions.LipSync
 {
+    /// <summary>
+    /// A lip animator that animates lip by following target weights.
+    /// </summary>
     public sealed class FollowingLipAnimator : ILipAnimator
     {
         private readonly ILipMorpher morpher;

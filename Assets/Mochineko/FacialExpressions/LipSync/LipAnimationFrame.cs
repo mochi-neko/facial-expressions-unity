@@ -4,10 +4,19 @@ using System.Runtime.InteropServices;
 
 namespace Mochineko.FacialExpressions.LipSync
 {
+    /// <summary>
+    /// Frame of lip animation.
+    /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public readonly struct LipAnimationFrame : IEquatable<LipAnimationFrame>
     {
+        /// <summary>
+        /// Sample of lip morphing.
+        /// </summary>
         public readonly LipSample sample;
+        /// <summary>
+        /// Duration of this frame in seconds.
+        /// </summary>
         public readonly float durationSeconds;
 
         public LipAnimationFrame(LipSample sample, float durationSeconds)

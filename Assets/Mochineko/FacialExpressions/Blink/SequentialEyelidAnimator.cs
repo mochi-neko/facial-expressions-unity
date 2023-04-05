@@ -7,6 +7,9 @@ using Mochineko.Relent.Extensions.UniTask;
 
 namespace Mochineko.FacialExpressions.Blink
 {
+    /// <summary>
+    /// A simple implementation of <see cref="IEyelidAnimator"/> that animates eyelid sequentially by frame collection.
+    /// </summary>
     public sealed class SequentialEyelidAnimator : IEyelidAnimator
     {
         private readonly IEyelidMorpher morpher;

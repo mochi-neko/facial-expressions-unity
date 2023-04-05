@@ -4,10 +4,19 @@ using System.Runtime.InteropServices;
 
 namespace Mochineko.FacialExpressions.Blink
 {
+    /// <summary>
+    /// Sample of eyelid morphing.
+    /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public readonly struct EyelidSample : IEquatable<EyelidSample>
     {
+        /// <summary>
+        /// Target eyelid.
+        /// </summary>
         public readonly Eyelid eyelid;
+        /// <summary>
+        /// Weight of morphing.
+        /// </summary>
         public readonly float weight;
 
         public EyelidSample(Eyelid eyelid, float weight)

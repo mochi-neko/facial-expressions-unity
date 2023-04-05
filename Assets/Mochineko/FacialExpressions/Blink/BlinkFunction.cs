@@ -4,13 +4,29 @@ using UnityEngine;
 
 namespace Mochineko.FacialExpressions.Blink
 {
+    /// <summary>
+    /// Provides blink functions.
+    /// </summary>
     public static class BlinkFunction
     {
+        /// <summary>
+        /// Weight of blink approximated by linear function.
+        /// </summary>
+        /// <param name="t"></param>
+        /// <param name="tc"></param>
+        /// <returns></returns>
         public static float LinearWeight(float t, float tc)
             => t <= tc
                 ? LinearClosingWeight(t, tc)
                 : LinearOpeningWeight(t, tc);
         
+        /// <summary>
+        /// Weight of closing blink approximated by linear function.
+        /// </summary>
+        /// <param name="t"></param>
+        /// <param name="tc"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
         public static float LinearClosingWeight(float t, float tc)
         {
             if (t is < 0f or > 1f)
@@ -31,6 +47,13 @@ namespace Mochineko.FacialExpressions.Blink
             return t / tc;
         }
 
+        /// <summary>
+        /// Weight of opening blink approximated by linear function.
+        /// </summary>
+        /// <param name="t"></param>
+        /// <param name="tc"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
         public static float LinearOpeningWeight(float t, float tc)
         {
             if (t is < 0f or > 1f)
@@ -51,11 +74,27 @@ namespace Mochineko.FacialExpressions.Blink
             return (1f - t) / (1f - tc);
         }
 
+        /// <summary>
+        /// Weight of blink approximated by exponential and quadratic functions.
+        /// </summary>
+        /// <param name="t">Parameter</param>
+        /// <param name="tc">Parameter at closing</param>
+        /// <param name="beta">Strength of closing</param>
+        /// <param name="a">Strength of opening</param>
+        /// <returns></returns>
         public static float ApproximatedWeight(float t, float tc, float beta, float a)
             => t <= tc
                 ? ApproximatedClosingWeight(t, tc, beta)
                 : ApproximatedOpeningWeight(t, tc, a);
 
+        /// <summary>
+        /// Weight of closing blink approximated by exponential and quadratic functions.
+        /// </summary>
+        /// <param name="t"></param>
+        /// <param name="tc"></param>
+        /// <param name="beta"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
         public static float ApproximatedClosingWeight(float t, float tc, float beta)
         {
             if (t is < 0f or > 1f)
@@ -82,6 +121,14 @@ namespace Mochineko.FacialExpressions.Blink
             return (Mathf.Exp(beta * t) - 1f) / (Mathf.Exp(beta * tc) - 1f);
         }
 
+        /// <summary>
+        /// Weight of opening blink approximated by exponential and quadratic functions.
+        /// </summary>
+        /// <param name="t"></param>
+        /// <param name="tc"></param>
+        /// <param name="a"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
         public static float ApproximatedOpeningWeight(float t, float tc, float a)
         {
             if (t is < 0f or > 1f)

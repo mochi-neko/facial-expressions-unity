@@ -5,6 +5,9 @@ using Mochineko.VOICEVOX_API.QueryCreation;
 
 namespace Mochineko.FacialExpressions.Extensions.VOICEVOX
 {
+    /// <summary>
+    /// Provides converting from <see cref="AudioQuery"/> to collection of <see cref="LipAnimationFrame"/>.
+    /// </summary>
     public static class AudioQueryConverter
     {
         private static readonly IReadOnlyDictionary<string, Viseme> VisemeMap
@@ -31,6 +34,11 @@ namespace Mochineko.FacialExpressions.Extensions.VOICEVOX
                 ["r"] = Viseme.RR, ["ry"] = Viseme.RR,
             };
 
+        /// <summary>
+        /// Converts <see cref="AudioQuery"/> to collection of <see cref="LipAnimationFrame"/>.
+        /// </summary>
+        /// <param name="audioQuery"></param>
+        /// <returns></returns>
         public static IEnumerable<LipAnimationFrame> ConvertToSequentialAnimationFrames(
             AudioQuery audioQuery)
         {

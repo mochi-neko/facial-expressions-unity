@@ -4,10 +4,19 @@ using System.Runtime.InteropServices;
 
 namespace Mochineko.FacialExpressions.LipSync
 {
+    /// <summary>
+    /// Sample of lip morphing.
+    /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public readonly struct LipSample : IEquatable<LipSample>
     {
+        /// <summary>
+        /// Viseme to morph.
+        /// </summary>
         public readonly Viseme viseme;
+        /// <summary>
+        /// Weight of morphing.
+        /// </summary>
         public readonly float weight;
         
         public LipSample(Viseme viseme, float weight)

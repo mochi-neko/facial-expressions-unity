@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace Mochineko.FacialExpressions.LipSync
 {
+    /// <summary>
+    /// An implementation of <see cref="ILipMorpher"/> that uses <see cref="SkinnedMeshRenderer"/>.
+    /// </summary>
     public sealed class SkinnedMeshLipMorpher : ILipMorpher
     {
         private readonly SkinnedMeshRenderer skinnedMeshRenderer;
