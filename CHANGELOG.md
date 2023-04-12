@@ -17,6 +17,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Add emotion system.
 
+### Changed
+
+- Update Relent version to 0.2.0.
+
 ## [0.1.0] - 2023-04-04
 
 ### Added
