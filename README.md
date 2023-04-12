@@ -6,7 +6,7 @@ Provides facial expressions system of models for Unity.
 
 - [x] Blink system
 - [x] LipSync system
-- [ ] Emotion system
+- [x] Emotion system
 
 ## Extensions
 

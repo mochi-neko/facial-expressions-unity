@@ -9,8 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Add emotion system.
 - Add extension for state control by state machine.
+
+## [0.2.0] - 2023-04-12
+
+### Added
+
+- Add emotion system.
 
 ## [0.1.0] - 2023-04-04
 

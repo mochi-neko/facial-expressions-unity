@@ -1,8 +1,8 @@
 {
   "name": "com.mochineko.facial-expressions",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "displayName": "Facial Expressions",
-  "description": "Facial expressions for 3D models.",
+  "description": "Facial expressions for human models.",
   "unity": "2021.3",
   "author": {
     "name": "Mochineko",
