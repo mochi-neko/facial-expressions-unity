@@ -96,4 +96,4 @@ See [NOTICE](https://github.com/mochi-neko/facial-expressions-unity/blob/main/NO
 
 ## License
 
-[MIT License](https://github.com/mochi-neko/facial-expressions-unity/blob/main/LICENSE).
+Licensed under the [MIT](https://github.com/mochi-neko/facial-expressions-unity/blob/main/LICENSE) license.
