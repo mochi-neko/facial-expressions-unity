@@ -4,6 +4,7 @@ using System.IO;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using Mochineko.FacialExpressions.Blink;
+using Mochineko.FacialExpressions.Emotion;
 using Mochineko.FacialExpressions.Extensions.VOICEVOX;
 using Mochineko.FacialExpressions.Extensions.VRM;
 using Mochineko.FacialExpressions.LipSync;
@@ -30,9 +31,13 @@ namespace Mochineko.FacialExpressions.Samples
         [SerializeField] private int speakerID;
         [SerializeField] private AudioSource? audioSource = null;
         [SerializeField] private bool skipSpeechSynthesis = false;
+        [SerializeField] private Emotion.Emotion emotion = Emotion.Emotion.Neutral;
+        [SerializeField] private float emotionWeight = 1f;
+        [SerializeField] private float emotionFollowingTime = 1f;
         
         private ILipAnimator? lipAnimator;
         private IEyelidAnimator? eyelidAnimator;
+        private ExclusiveFollowingEmotionAnimator<Emotion.Emotion>? emotionAnimator;
         private AudioClip? audioClip;
 
         private readonly IPolicy<AudioQuery> queryCreationPolicy
@@ -61,8 +66,8 @@ namespace Mochineko.FacialExpressions.Samples
             var lipMorpher = new VRMLipMorpher(instance.Runtime.Expression);
             lipAnimator = new FollowingLipAnimator(lipMorpher);
 
-            var eyelidMorper = new VRMEyelidMorpher(instance.Runtime.Expression);
-            eyelidAnimator = new SequentialEyelidAnimator(eyelidMorper);
+            var eyelidMorpher = new VRMEyelidMorpher(instance.Runtime.Expression);
+            eyelidAnimator = new SequentialEyelidAnimator(eyelidMorpher);
 
             var eyelidFrames = ProbabilisticEyelidAnimationGenerator.Generate(
                 Eyelid.Both,
@@ -73,6 +78,16 @@ namespace Mochineko.FacialExpressions.Samples
                     loop: true,
                     this.GetCancellationTokenOnDestroy())
                 .Forget();
+            
+            var emotionMorpher = new VRMEmotionMorpher(instance.Runtime.Expression);
+            emotionAnimator = new ExclusiveFollowingEmotionAnimator<Emotion.Emotion>(
+                emotionMorpher,
+                followingTime: emotionFollowingTime);
+        }
+
+        private void Update()
+        {
+            emotionAnimator?.Update();
         }
 
         private void OnDestroy()
@@ -240,6 +255,15 @@ namespace Mochineko.FacialExpressions.Samples
             lipAnimator
                 ?.AnimateAsync(lipFrames, cancellationToken)
                 .Forget();
+        }
+        
+        [ContextMenu(nameof(Emote))]
+        public void Emote()
+        {
+            emotionAnimator?
+                .Emote(new EmotionSample<Emotion.Emotion>(
+                    emotion,
+                    weight: emotionWeight));
         }
     }
 }

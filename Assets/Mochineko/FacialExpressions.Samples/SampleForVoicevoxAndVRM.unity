@@ -170,11 +170,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   path: "/Users/masaki/Downloads/\u3046\u3061\u306E\u3053-Light.vrm"
-  text: "\u3053\u3093\u306B\u3061\u306F\u3001\u3053\u308C\u306F\u30C6\u30B9\u30C8\u3067\u3059\u3002\u3042\u3044\u3046\u3048\u304A\u3001\u304B\u304D\u304F\u3051\u3053\u3001\u3055\u3057\u3059\u305B\u305D\u3002Hello
-    world\u3002"
-  speakerID: 1
+  text: "\u3053\u3093\u306B\u3061\u306F\u3001\u3053\u308C\u306F\u30C6\u30B9\u30C8\u3067\u3059\u3002\u3042\u3044\u3046\u3048\u304A\u3001\u304B\u304D\u304F\u3051\u3053\u3001\u3055\u3057\u3059\u305B\u305D\u3002"
+  speakerID: 0
   audioSource: {fileID: 318373565}
-  skipSpeechSynthesis: 0
+  skipSpeechSynthesis: 1
+  emotion: 0
+  emotionWeight: 0.4
+  emotionFollowingTime: 0.3
 --- !u!82 &318373565
 AudioSource:
   m_ObjectHideFlags: 0
@@ -426,7 +428,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
+  near clip plane: 0.1
   far clip plane: 1000
   field of view: 60
   orthographic: 0
@@ -453,11 +455,11 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1517102759}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalPosition: {x: 0, y: 1.2, z: 0.25}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}

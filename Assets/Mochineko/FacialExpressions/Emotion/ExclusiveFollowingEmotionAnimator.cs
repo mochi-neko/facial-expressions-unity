@@ -1,0 +1,76 @@
+#nullable enable
+using System;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace Mochineko.FacialExpressions.Emotion
+{
+    /// <summary>
+    /// An emotion animator that animates emotion by following target weights.
+    /// </summary>
+    public sealed class ExclusiveFollowingEmotionAnimator<TEmotion>
+        where TEmotion : Enum
+    {
+        private readonly IEmotionMorpher<TEmotion> morpher;
+        private readonly float followingTime;
+        private readonly Dictionary<TEmotion, EmotionSample<TEmotion>> targets = new();
+        private readonly Dictionary<TEmotion, float> velocities = new();
+
+        public ExclusiveFollowingEmotionAnimator(
+            IEmotionMorpher<TEmotion> morpher,
+            float followingTime)
+        {
+            this.morpher = morpher;
+            this.followingTime = followingTime;
+            this.morpher.Reset();
+        }
+
+        public void Emote(EmotionSample<TEmotion> sample)
+        {
+            if (targets.ContainsKey(sample.emotion))
+            {
+                targets[sample.emotion] = sample;
+                velocities[sample.emotion] = 0f;
+            }
+            else
+            {
+                targets.Add(sample.emotion, sample);
+                velocities.Add(sample.emotion, 0f);
+            }
+
+            // Exclude other emotions
+            var otherEmotions = new List<TEmotion>();
+            foreach (var emotion in targets.Keys)
+            {
+                if (!emotion.Equals(sample.emotion))
+                {
+                    otherEmotions.Add(emotion);
+                }
+            }
+
+            foreach (var other in otherEmotions)
+            {
+                targets[other] = new EmotionSample<TEmotion>(other, weight: 0f);
+            }
+        }
+
+        public void Update()
+        {
+            foreach (var target in targets)
+            {
+                var velocity = velocities[target.Key];
+                var smoothedWeight = Mathf.Clamp(
+                    value: Mathf.SmoothDamp(
+                        current: morpher.GetWeightOf(target.Key),
+                        target: target.Value.weight,
+                        ref velocity,
+                        followingTime),
+                    min: 0f,
+                    max: target.Value.weight);
+                velocities[target.Key] = velocity;
+
+                morpher.MorphInto(new EmotionSample<TEmotion>(target.Key, smoothedWeight));
+            }
+        }
+    }
+}
