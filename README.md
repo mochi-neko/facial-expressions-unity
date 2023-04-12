@@ -1,6 +1,6 @@
 # facial-expressions-unity
 
-Provides facial expressions system of models for Unity.
+Provides facial expressions system of human models for Unity.
 
 ## Features
 
