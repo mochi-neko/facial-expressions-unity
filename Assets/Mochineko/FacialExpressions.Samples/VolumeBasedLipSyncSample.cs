@@ -5,7 +5,6 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using Mochineko.FacialExpressions.Blink;
 using Mochineko.FacialExpressions.Emotion;
-using Mochineko.FacialExpressions.Extensions.VOICEVOX;
 using Mochineko.FacialExpressions.Extensions.VRM;
 using Mochineko.FacialExpressions.LipSync;
 using Mochineko.Relent.Resilience;
@@ -23,18 +22,39 @@ using VRMShaders;
 namespace Mochineko.FacialExpressions.Samples
 {
     // ReSharper disable once InconsistentNaming
-    internal sealed class SampleForVoiceVoxAndVRM : MonoBehaviour
+    internal sealed class VolumeBasedLipSyncSample : MonoBehaviour
     {
-        [SerializeField] private string path = string.Empty;
-        [SerializeField] private string text = string.Empty;
-        [SerializeField] private int speakerID;
-        [SerializeField] private AudioSource? audioSource = null;
-        [SerializeField] private bool skipSpeechSynthesis = false;
-        [SerializeField] private BasicEmotion basicEmotion = BasicEmotion.Neutral;
-        [SerializeField] private float emotionWeight = 1f;
-        [SerializeField] private float emotionFollowingTime = 1f;
+        [SerializeField]
+        private string path = string.Empty;
+
+        [SerializeField]
+        private string text = string.Empty;
+
+        [SerializeField]
+        private int speakerID;
+
+        [SerializeField]
+        private AudioSource? audioSource = null;
+
+        [SerializeField]
+        private bool skipSpeechSynthesis = false;
+
+        [SerializeField]
+        private BasicEmotion basicEmotion = BasicEmotion.Neutral;
+
+        [SerializeField]
+        private float emotionWeight = 1f;
+
+        [SerializeField]
+        private float emotionFollowingTime = 1f;
         
-        private ILipAnimator? lipAnimator;
+        [SerializeField]
+        private float volumeSmoothTime = 0.1f;
+        
+        [SerializeField]
+        private float volumeMultiplier = 1f;
+
+        private VolumeBasedLipAnimator? lipAnimator;
         private IEyelidAnimator? eyelidAnimator;
         private ExclusiveFollowingEmotionAnimator<BasicEmotion>? emotionAnimator;
         private AudioClip? audioClip;
@@ -52,8 +72,13 @@ namespace Mochineko.FacialExpressions.Samples
 
         private async void Start()
         {
+            if (audioSource == null)
+            {
+                throw new NullReferenceException(nameof(audioSource));
+            }
+
             VoiceVoxBaseURL.BaseURL = "http://127.0.0.1:50021";
-            
+
             var binary = await File.ReadAllBytesAsync(
                 path,
                 this.GetCancellationTokenOnDestroy());
@@ -63,7 +88,13 @@ namespace Mochineko.FacialExpressions.Samples
                 this.GetCancellationTokenOnDestroy());
 
             var lipMorpher = new VRMLipMorpher(instance.Runtime.Expression);
-            lipAnimator = new FollowingLipAnimator(lipMorpher);
+            lipAnimator = new VolumeBasedLipAnimator(
+                lipMorpher,
+                Viseme.aa,
+                audioSource,
+                smoothTime: volumeSmoothTime,
+                volumeMultiplier: volumeMultiplier,
+                samplesCount: 1024);
 
             var eyelidMorpher = new VRMEyelidMorpher(instance.Runtime.Expression);
             eyelidAnimator = new SequentialEyelidAnimator(eyelidMorpher);
@@ -77,7 +108,7 @@ namespace Mochineko.FacialExpressions.Samples
                     loop: true,
                     this.GetCancellationTokenOnDestroy())
                 .Forget();
-            
+
             var emotionMorpher = new VRMEmotionMorpher(instance.Runtime.Expression);
             emotionAnimator = new ExclusiveFollowingEmotionAnimator<BasicEmotion>(
                 emotionMorpher,
@@ -239,25 +270,15 @@ namespace Mochineko.FacialExpressions.Samples
                 {
                     await stream.DisposeAsync();
                 }
-                
+
                 await UniTask.SwitchToMainThread(cancellationToken);
 
                 // Play AudioClip.
                 audioSource.clip = audioClip;
                 audioSource.PlayDelayed(0.1f);
             }
-            
-            var lipFrames = AudioQueryConverter.ConvertToSequentialAnimationFrames(audioQuery);
-
-            await UniTask.Delay(
-                TimeSpan.FromSeconds(0.1f),
-                cancellationToken:cancellationToken);
-            
-            lipAnimator
-                ?.AnimateAsync(lipFrames, cancellationToken)
-                .Forget();
         }
-        
+
         [ContextMenu(nameof(Emote))]
         public void Emote()
         {

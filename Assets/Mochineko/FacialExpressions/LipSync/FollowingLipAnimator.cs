@@ -68,7 +68,7 @@ namespace Mochineko.FacialExpressions.LipSync
                 }
             }
 
-            animationCanceller.Cancel();
+            animationCanceller?.Cancel();
             animationCanceller = null;
         }
 
