@@ -19,5 +19,12 @@ namespace Mochineko.FacialExpressions.LipSync
         UniTask AnimateAsync(
             IEnumerable<LipAnimationFrame> frames,
             CancellationToken cancellationToken);
+
+        void Update();
+        
+        /// <summary>
+        /// Resets all morphing to default.
+        /// </summary>
+        void Reset();
     }
 }

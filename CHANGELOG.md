@@ -11,6 +11,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Add extension for state control by state machine.
 
+## [0.3.0] - 2023-05-XX
+
+### Changed
+
+- Update interfaces of animators.
+- Rename `Emotion` to `BasicEmotion`.
+
 ## [0.2.0] - 2023-04-12
 
 ### Added

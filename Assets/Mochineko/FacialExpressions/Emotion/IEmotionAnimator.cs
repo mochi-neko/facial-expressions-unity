@@ -4,24 +4,23 @@ using System;
 namespace Mochineko.FacialExpressions.Emotion
 {
     /// <summary>
-    /// Defines a morpher of emotion.
+    /// Defines an animator of emotion.
     /// </summary>
-    public interface IEmotionMorpher<TEmotion>
+    /// <typeparam name="TEmotion"></typeparam>
+    public interface IEmotionAnimator<TEmotion>
         where TEmotion : Enum
     {
         /// <summary>
-        /// Morphs specified emotion into specified weight. 
+        /// Emotes.
         /// </summary>
         /// <param name="sample"></param>
-        void MorphInto(EmotionSample<TEmotion> sample);
-
+        void Emote(EmotionSample<TEmotion> sample);
+        
         /// <summary>
-        /// Gets current weight of specified emotion.
+        /// Updates animation.
         /// </summary>
-        /// <param name="emotion"></param>
-        /// <returns></returns>
-        float GetWeightOf(TEmotion emotion);
-
+        void Update();
+        
         /// <summary>
         /// Resets all morphing to default.
         /// </summary>

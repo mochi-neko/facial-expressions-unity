@@ -13,7 +13,8 @@ namespace Mochineko.FacialExpressions.Blink
     public sealed class SequentialEyelidAnimator : IEyelidAnimator
     {
         private readonly IEyelidMorpher morpher;
-
+        
+        private EyelidSample currentSample = new(Eyelid.Both, 0f);
         private CancellationTokenSource? cancellationTokenSource;
 
         public SequentialEyelidAnimator(IEyelidMorpher morpher)
@@ -31,6 +32,7 @@ namespace Mochineko.FacialExpressions.Blink
                 .CreateLinkedTokenSource(cancellationToken);
             
             morpher.Reset();
+            currentSample = new EyelidSample(Eyelid.Both, 0f);
 
             while (loop && !cancellationTokenSource.IsCancellationRequested)
             {
@@ -40,11 +42,12 @@ namespace Mochineko.FacialExpressions.Blink
                     {
                         break;
                     }
-
-                    morpher.MorphInto(frame.sample);
+                    
+                    currentSample = frame.sample;
 
                     var result = await RelentUniTask.Delay(
                         TimeSpan.FromSeconds(frame.durationSeconds),
+                        delayTiming: PlayerLoopTiming.Update,
                         cancellationToken: cancellationTokenSource.Token);
 
                     // Cancelled
@@ -56,8 +59,19 @@ namespace Mochineko.FacialExpressions.Blink
             }
 
             morpher.Reset();
+            currentSample = new EyelidSample(Eyelid.Both, 0f);
 
             cancellationTokenSource = null;
+        }
+
+        public void Update()
+        {
+            morpher.MorphInto(currentSample);
+        }
+
+        public void Reset()
+        {
+            morpher.Reset();
         }
     }
 }

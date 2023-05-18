@@ -1,7 +1,6 @@
 #nullable enable
 using System.Collections.Generic;
 using Mochineko.FacialExpressions.Emotion;
-using UnityEngine;
 using UniVRM10;
 
 namespace Mochineko.FacialExpressions.Samples
@@ -10,20 +9,20 @@ namespace Mochineko.FacialExpressions.Samples
     /// A sample of emotion morpher for VRM models.
     /// </summary>
     // ReSharper disable once InconsistentNaming
-    public sealed class VRMEmotionMorpher : IEmotionMorpher<Emotion.Emotion>
+    public sealed class VRMEmotionMorpher : IEmotionMorpher<BasicEmotion>
     {
         private readonly Vrm10RuntimeExpression expression;
 
-        private static readonly IReadOnlyDictionary<Emotion.Emotion, ExpressionKey> KeyMap
-            = new Dictionary<Emotion.Emotion, ExpressionKey>
+        private static readonly IReadOnlyDictionary<BasicEmotion, ExpressionKey> KeyMap
+            = new Dictionary<BasicEmotion, ExpressionKey>
             {
-                [Emotion.Emotion.Neutral] = ExpressionKey.Neutral,
-                [Emotion.Emotion.Happy] = ExpressionKey.Happy,
-                [Emotion.Emotion.Sad] = ExpressionKey.Sad,
-                [Emotion.Emotion.Angry] = ExpressionKey.Angry,
-                [Emotion.Emotion.Fear] = ExpressionKey.Neutral,
-                [Emotion.Emotion.Surprised] = ExpressionKey.Surprised,
-                [Emotion.Emotion.Disgusted] = ExpressionKey.Neutral,
+                [BasicEmotion.Neutral] = ExpressionKey.Neutral,
+                [BasicEmotion.Happy] = ExpressionKey.Happy,
+                [BasicEmotion.Sad] = ExpressionKey.Sad,
+                [BasicEmotion.Angry] = ExpressionKey.Angry,
+                [BasicEmotion.Fearful] = ExpressionKey.Neutral,
+                [BasicEmotion.Surprised] = ExpressionKey.Surprised,
+                [BasicEmotion.Disgusted] = ExpressionKey.Neutral,
             };
 
         public VRMEmotionMorpher(Vrm10RuntimeExpression expression)
@@ -31,7 +30,7 @@ namespace Mochineko.FacialExpressions.Samples
             this.expression = expression;
         }
 
-        public void MorphInto(EmotionSample<Emotion.Emotion> sample)
+        public void MorphInto(EmotionSample<BasicEmotion> sample)
         {
             if (KeyMap.TryGetValue(sample.emotion, out var key))
             {
@@ -39,9 +38,9 @@ namespace Mochineko.FacialExpressions.Samples
             }
         }
 
-        public float GetWeightOf(Emotion.Emotion emotion)
+        public float GetWeightOf(BasicEmotion basicEmotion)
         {
-            if (KeyMap.TryGetValue(emotion, out var key))
+            if (KeyMap.TryGetValue(basicEmotion, out var key))
             {
                 return expression.GetWeight(key);
             }
@@ -53,13 +52,13 @@ namespace Mochineko.FacialExpressions.Samples
 
         public void Reset()
         {
-            MorphInto(new EmotionSample<Emotion.Emotion>(Emotion.Emotion.Neutral, weight: 0f));
-            MorphInto(new EmotionSample<Emotion.Emotion>(Emotion.Emotion.Happy, weight: 0f));
-            MorphInto(new EmotionSample<Emotion.Emotion>(Emotion.Emotion.Sad, weight: 0f));
-            MorphInto(new EmotionSample<Emotion.Emotion>(Emotion.Emotion.Angry, weight: 0f));
-            MorphInto(new EmotionSample<Emotion.Emotion>(Emotion.Emotion.Fear, weight: 0f));
-            MorphInto(new EmotionSample<Emotion.Emotion>(Emotion.Emotion.Surprised, weight: 0f));
-            MorphInto(new EmotionSample<Emotion.Emotion>(Emotion.Emotion.Disgusted, weight: 0f));
+            MorphInto(new EmotionSample<BasicEmotion>(BasicEmotion.Neutral, weight: 0f));
+            MorphInto(new EmotionSample<BasicEmotion>(BasicEmotion.Happy, weight: 0f));
+            MorphInto(new EmotionSample<BasicEmotion>(BasicEmotion.Sad, weight: 0f));
+            MorphInto(new EmotionSample<BasicEmotion>(BasicEmotion.Angry, weight: 0f));
+            MorphInto(new EmotionSample<BasicEmotion>(BasicEmotion.Fearful, weight: 0f));
+            MorphInto(new EmotionSample<BasicEmotion>(BasicEmotion.Surprised, weight: 0f));
+            MorphInto(new EmotionSample<BasicEmotion>(BasicEmotion.Disgusted, weight: 0f));
         }
     }
 }

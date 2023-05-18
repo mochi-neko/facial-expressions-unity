@@ -2,15 +2,15 @@
 namespace Mochineko.FacialExpressions.Emotion
 {
     /// <summary>
-    /// A sample of emotions.
+    /// Basic emotions defined by Paul Ekman.
     /// </summary>
-    public enum Emotion
+    public enum BasicEmotion
     {
         Neutral,
         Happy,
         Sad,
         Angry,
-        Fear,
+        Fearful,
         Surprised,
         Disgusted,
     }

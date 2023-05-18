@@ -12,12 +12,14 @@ namespace Mochineko.FacialExpressions.LipSync
         /// </summary>
         /// <param name="sample"></param>
         void MorphInto(LipSample sample);
+        
         /// <summary>
         /// Gets current weight of specified viseme.
         /// </summary>
         /// <param name="viseme"></param>
         /// <returns></returns>
         float GetWeightOf(Viseme viseme);
+        
         /// <summary>
         /// Resets all morphing to default.
         /// </summary>

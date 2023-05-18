@@ -31,13 +31,13 @@ namespace Mochineko.FacialExpressions.Samples
         [SerializeField] private int speakerID;
         [SerializeField] private AudioSource? audioSource = null;
         [SerializeField] private bool skipSpeechSynthesis = false;
-        [SerializeField] private Emotion.Emotion emotion = Emotion.Emotion.Neutral;
+        [SerializeField] private Emotion.BasicEmotion basicEmotion = Emotion.BasicEmotion.Neutral;
         [SerializeField] private float emotionWeight = 1f;
         [SerializeField] private float emotionFollowingTime = 1f;
         
         private ILipAnimator? lipAnimator;
         private IEyelidAnimator? eyelidAnimator;
-        private ExclusiveFollowingEmotionAnimator<Emotion.Emotion>? emotionAnimator;
+        private ExclusiveFollowingEmotionAnimator<Emotion.BasicEmotion>? emotionAnimator;
         private AudioClip? audioClip;
 
         private readonly IPolicy<AudioQuery> queryCreationPolicy
@@ -80,13 +80,15 @@ namespace Mochineko.FacialExpressions.Samples
                 .Forget();
             
             var emotionMorpher = new VRMEmotionMorpher(instance.Runtime.Expression);
-            emotionAnimator = new ExclusiveFollowingEmotionAnimator<Emotion.Emotion>(
+            emotionAnimator = new ExclusiveFollowingEmotionAnimator<Emotion.BasicEmotion>(
                 emotionMorpher,
                 followingTime: emotionFollowingTime);
         }
 
         private void Update()
         {
+            eyelidAnimator?.Update();
+            lipAnimator?.Update();
             emotionAnimator?.Update();
         }
 
@@ -261,8 +263,8 @@ namespace Mochineko.FacialExpressions.Samples
         public void Emote()
         {
             emotionAnimator?
-                .Emote(new EmotionSample<Emotion.Emotion>(
-                    emotion,
+                .Emote(new EmotionSample<Emotion.BasicEmotion>(
+                    basicEmotion,
                     weight: emotionWeight));
         }
     }

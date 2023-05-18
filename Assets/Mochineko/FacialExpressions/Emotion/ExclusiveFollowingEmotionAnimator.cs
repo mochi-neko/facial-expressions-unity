@@ -9,6 +9,7 @@ namespace Mochineko.FacialExpressions.Emotion
     /// An emotion animator that animates emotion by following target weights.
     /// </summary>
     public sealed class ExclusiveFollowingEmotionAnimator<TEmotion>
+        : IEmotionAnimator<TEmotion>
         where TEmotion : Enum
     {
         private readonly IEmotionMorpher<TEmotion> morpher;
@@ -71,6 +72,11 @@ namespace Mochineko.FacialExpressions.Emotion
 
                 morpher.MorphInto(new EmotionSample<TEmotion>(target.Key, smoothedWeight));
             }
+        }
+
+        public void Reset()
+        {
+            morpher.Reset();
         }
     }
 }

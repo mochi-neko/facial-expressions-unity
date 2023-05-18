@@ -6,7 +6,7 @@ using Cysharp.Threading.Tasks;
 namespace Mochineko.FacialExpressions.Blink
 {
     /// <summary>
-    /// Defines an object that animates eyelid by a collection of <see cref="EyelidAnimationFrame"/>.
+    /// Defines an animator of eyelids.
     /// </summary>
     public interface IEyelidAnimator
     {
@@ -21,5 +21,15 @@ namespace Mochineko.FacialExpressions.Blink
             IEnumerable<EyelidAnimationFrame> frames,
             bool loop,
             CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Updates animation.
+        /// </summary>
+        void Update();
+        
+        /// <summary>
+        /// Resets all morphing to default.
+        /// </summary>
+        void Reset();
     }
 }
