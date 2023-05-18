@@ -39,9 +39,6 @@ namespace Mochineko.FacialExpressions.LipSync
             animationCanceller?.Cancel();
             animationCanceller = CancellationTokenSource
                 .CreateLinkedTokenSource(cancellationToken);
-            
-            targetWeights.Clear();
-            morpher.Reset();
 
             foreach (var frame in frames)
             {
@@ -72,9 +69,6 @@ namespace Mochineko.FacialExpressions.LipSync
             }
 
             animationCanceller.Cancel();
-
-            morpher.Reset();
-
             animationCanceller = null;
         }
 

@@ -20,6 +20,9 @@ namespace Mochineko.FacialExpressions.LipSync
             IEnumerable<LipAnimationFrame> frames,
             CancellationToken cancellationToken);
 
+        /// <summary>
+        /// Updates animation.
+        /// </summary>
         void Update();
         
         /// <summary>
