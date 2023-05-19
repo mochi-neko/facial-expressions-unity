@@ -7,11 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.0] - 2023-05-19
+
 ### Added
 
-- Add extension for state control by state machine.
-
-## [0.3.0] - 2023-05-XX
+- Add volume-based lip animator: `VolumeBasedLipAnimator` with sample.
 
 ### Changed
 

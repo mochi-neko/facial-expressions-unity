@@ -5,91 +5,63 @@ Provides facial expressions system of human models for Unity.
 ## Features
 
 - [x] Blink system
-- [x] LipSync system
+  - Procedural blink animation.
+- [x] LipSync system 
+  - Audio volume based lip animation.
 - [x] Emotion system
+  - Exclusive emotion animation.
+  - Can define custom emotion.
+  - Provide basic emotion defined by Paul Ekman. 
 
 ## Extensions
 
 - [x] VRM
+  - Blink, lip and emotion animators for VRM model. 
 - [x] VOICEVOX
-- [ ] StateMachine
+  - VOICEVOX audio query based lip animation. 
+
+You can extend to other libraries e.g. Live2D.
 
 ## How to import by Unity Package Manager
 
-Minimal dependencies
+Add following package to your `Packages/manifest.json`:
 
-```json
-{
-  "dependencies": {
-    "com.mochineko.facial-expressions": "https://github.com/mochi-neko/facial-expressions-unity.git?path=/Assets/Mochineko/FacialExpressions#0.2.0",
-    "com.mochineko.relent": "https://github.com/mochi-neko/Relent.git?path=/Assets/Mochineko/Relent#0.2.0",
-    "com.mochineko.relent.extensions.unitask": "https://github.com/mochi-neko/Relent.git?path=/Assets/Mochineko/Relent.Extensions/UniTask#0.2.0",
-    "com.cysharp.unitask": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask",
-    ...
-  }
-}
 ```
-
-If you use VOICEVOX extension, please add
-
-```json
-{
-  "dependencies": {
-    "com.mochineko.facial-expressions.extensions.voicevox": "https://github.com/mochi-neko/facial-expressions-unity.git?path=/Assets/Mochineko/FacialExpressions.Extensions/VOICEVOX#0.2.0",
-    "com.mochineko.voicevox-api": "https://github.com/mochi-neko/VOICEVOX-API-unity.git?path=/Assets/Mochineko/VOICEVOX_API#0.2.2",
-    ...
-  }
-}
+"com.mochineko.facial-expressions": "https://github.com/mochi-neko/facial-expressions-unity.git?path=/Assets/Mochineko/FacialExpressions#0.3.0",
 ```
+.
 
-If you use VRM extension, please add
+All dependencies are in [package.json](./Assets/Mochineko/FacialExpressions/package.json).
 
-```json
-{
-  "dependencies": {
-    "com.mochineko.facial-expressions.extensions.vrm": "https://github.com/mochi-neko/facial-expressions-unity.git?path=/Assets/Mochineko/FacialExpressions.Extensions/VRM#0.2.0",
-    "com.vrmc.gltf": "https://github.com/vrm-c/UniVRM.git?path=/Assets/UniGLTF#v0.108.0",
-    "com.vrmc.vrm": "https://github.com/vrm-c/UniVRM.git?path=/Assets/VRM10#v0.108.0",
-    "com.vrmc.vrmshaders": "https://github.com/vrm-c/UniVRM.git?path=/Assets/VRMShaders#v0.108.0",
-    ...
-  }
-}
+## How to import extensions
+
+If you use VOICEVOX extension, please add following dependency:
+
 ```
+"com.mochineko.facial-expressions.extensions.voicevox": "https://github.com/mochi-neko/facial-expressions-unity.git?path=/Assets/Mochineko/FacialExpressions.Extensions/VOICEVOX#0.3.0",
+```
+.
+
+If you use VRM extension, please add following dependency:
+
+```
+"com.mochineko.facial-expressions.extensions.vrm": "https://github.com/mochi-neko/facial-expressions-unity.git?path=/Assets/Mochineko/FacialExpressions.Extensions/VRM#0.3.0",
+```
+.
 
 ## Samples
 
-If you use [sample with VOICEVOX and VRM](https://github.com/mochi-neko/facial-expressions-unity/blob/main/Assets/Mochineko/FacialExpressions.Samples/SampleForVoicevoxAndVRM.cs),
- all dependencies are
+- [Sample to use VOICEVOX and VRM](./Assets/Mochineko/FacialExpressions.Samples/SampleForVoiceVoxAndVRM.cs).
+- [Sample to use audio volume based lip sync](./Assets/Mochineko/FacialExpressions.Samples/VolumeBasedLipSyncSample.cs).
 
-```json
-{
-  "dependencies": {
-    "com.mochineko.facial-expressions": "https://github.com/mochi-neko/facial-expressions-unity.git?path=/Assets/Mochineko/FacialExpressions#0.2.0",
-    "com.mochineko.facial-expressions.extensions.voicevox": "https://github.com/mochi-neko/facial-expressions-unity.git?path=/Assets/Mochineko/FacialExpressions.Extensions/VOICEVOX#0.2.0",
-    "com.mochineko.facial-expressions.extensions.vrm": "https://github.com/mochi-neko/facial-expressions-unity.git?path=/Assets/Mochineko/FacialExpressions.Extensions/VRM#0.2.0",
-    "com.mochineko.relent": "https://github.com/mochi-neko/Relent.git?path=/Assets/Mochineko/Relent#0.2.0",
-    "com.mochineko.relent.extensions.unitask": "https://github.com/mochi-neko/Relent.git?path=/Assets/Mochineko/Relent.Extensions/UniTask#0.2.0",
-    "com.mochineko.simple-audio-codec-unity": "https://github.com/mochi-neko/simple-audio-codec-unity.git?path=/Assets/Mochineko/SimpleAudioCodec#0.1.2",
-    "com.mochineko.voicevox-api": "https://github.com/mochi-neko/VOICEVOX-API-unity.git?path=/Assets/Mochineko/VOICEVOX_API#0.2.2",
-    "com.naudio.core": "https://github.com/mochi-neko/simple-audio-codec-unity.git?path=/Assets/NAudio/NAudio.Core#0.1.2",
-    "com.vrmc.gltf": "https://github.com/vrm-c/UniVRM.git?path=/Assets/UniGLTF#v0.108.0",
-    "com.vrmc.vrm": "https://github.com/vrm-c/UniVRM.git?path=/Assets/VRM10#v0.108.0",
-    "com.vrmc.vrmshaders": "https://github.com/vrm-c/UniVRM.git?path=/Assets/VRMShaders#v0.108.0",
-    "com.cysharp.unitask": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask",
-    "com.unity.nuget.newtonsoft-json": "3.0.2",
-    ...
-  }
-}
-```
+## Change log
 
-## Changelog
-
-See [CHANGELOG](https://github.com/mochi-neko/facial-expressions-unity/blob/main/CHANGELOG.md).
+See [CHANGELOG](./CHANGELOG.md).
 
 ## 3rd Party Notices
 
-See [NOTICE](https://github.com/mochi-neko/facial-expressions-unity/blob/main/NOTICE.md).
+See [NOTICE](./NOTICE.md).
 
 ## License
 
-Licensed under the [MIT](https://github.com/mochi-neko/facial-expressions-unity/blob/main/LICENSE) license.
+Licensed under the [MIT](./LICENSE) license.
