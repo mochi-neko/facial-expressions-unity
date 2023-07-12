@@ -1,6 +1,6 @@
 {
   "name": "com.mochineko.facial-expressions.extensions.vrm",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "displayName": "Facial Expressions / VRM",
   "description": "Facial expressions extension for VRM.",
   "unity": "2021.3",
