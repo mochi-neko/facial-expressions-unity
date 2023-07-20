@@ -1,17 +1,11 @@
 {
   "name": "com.mochineko.facial-expressions.extensions.vrm",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "displayName": "Facial Expressions / VRM",
   "description": "Facial expressions extension for VRM.",
   "unity": "2021.3",
   "author": {
     "name": "Mochineko",
     "email": "t.o.e.4315@gmail.com"
-  },
-  "dependencies": {
-    "com.mochineko.facial-expressions": "https://github.com/mochi-neko/facial-expressions-unity.git?path=/Assets/Mochineko/FacialExpressions#0.3.0",
-    "com.vrmc.gltf": "https://github.com/vrm-c/UniVRM.git?path=/Assets/UniGLTF#v0.108.0",
-    "com.vrmc.vrm": "https://github.com/vrm-c/UniVRM.git?path=/Assets/VRM10#v0.108.0",
-    "com.vrmc.vrmshaders": "https://github.com/vrm-c/UniVRM.git?path=/Assets/VRMShaders#v0.108.0"
   }
 }
