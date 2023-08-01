@@ -72,6 +72,19 @@ namespace Mochineko.FacialExpressions.LipSync
             animationCanceller = null;
         }
 
+        public void SetTarget(LipSample sample)
+        {
+            if (targetWeights.ContainsKey(sample.viseme))
+            {
+                targetWeights[sample.viseme] = sample.weight;
+            }
+            else
+            {
+                targetWeights.Add(sample.viseme, sample.weight);
+                followingVelocities.Add(sample.viseme, initialFollowingVelocity);
+            }
+        }
+
         public void Update()
         {
             foreach (var target in targetWeights)

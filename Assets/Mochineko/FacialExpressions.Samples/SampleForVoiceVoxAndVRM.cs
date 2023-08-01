@@ -33,7 +33,7 @@ namespace Mochineko.FacialExpressions.Samples
         [SerializeField] private BasicEmotion basicEmotion = BasicEmotion.Neutral;
         [SerializeField] private float emotionWeight = 1f;
         [SerializeField] private float emotionFollowingTime = 1f;
-        
+
         private ILipAnimator? lipAnimator;
         private IEyelidAnimator? eyelidAnimator;
         private ExclusiveFollowingEmotionAnimator<BasicEmotion>? emotionAnimator;
@@ -53,7 +53,7 @@ namespace Mochineko.FacialExpressions.Samples
         private async void Start()
         {
             VoiceVoxBaseURL.BaseURL = "http://127.0.0.1:50021";
-            
+
             var binary = await File.ReadAllBytesAsync(
                 path,
                 this.GetCancellationTokenOnDestroy());
@@ -77,7 +77,7 @@ namespace Mochineko.FacialExpressions.Samples
                     loop: true,
                     this.GetCancellationTokenOnDestroy())
                 .Forget();
-            
+
             var emotionMorpher = new VRMEmotionMorpher(instance.Runtime.Expression);
             emotionAnimator = new ExclusiveFollowingEmotionAnimator<BasicEmotion>(
                 emotionMorpher,
@@ -239,25 +239,25 @@ namespace Mochineko.FacialExpressions.Samples
                 {
                     await stream.DisposeAsync();
                 }
-                
+
                 await UniTask.SwitchToMainThread(cancellationToken);
 
                 // Play AudioClip.
                 audioSource.clip = audioClip;
                 audioSource.PlayDelayed(0.1f);
             }
-            
+
             var lipFrames = AudioQueryConverter.ConvertToSequentialAnimationFrames(audioQuery);
 
             await UniTask.Delay(
                 TimeSpan.FromSeconds(0.1f),
                 cancellationToken:cancellationToken);
-            
+
             lipAnimator
                 ?.AnimateAsync(lipFrames, cancellationToken)
                 .Forget();
         }
-        
+
         [ContextMenu(nameof(Emote))]
         public void Emote()
         {
@@ -267,4 +267,6 @@ namespace Mochineko.FacialExpressions.Samples
                     weight: emotionWeight));
         }
     }
+
+    // ReSharper disable once InconsistentNaming
 }
