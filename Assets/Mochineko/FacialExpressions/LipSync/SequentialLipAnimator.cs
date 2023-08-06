@@ -8,13 +8,12 @@ using Mochineko.Relent.Extensions.UniTask;
 namespace Mochineko.FacialExpressions.LipSync
 {
     /// <summary>
-    /// A lip animator that animates lip sequentially.
+    /// A sequential lip animator.
     /// </summary>
-    public sealed class SequentialLipAnimator : ILipAnimator
+    public sealed class SequentialLipAnimator : ISequentialLipAnimator
     {
         private readonly ILipMorpher morpher;
 
-        private LipSample currentSample = new(Viseme.sil, 0f);
         private CancellationTokenSource? animationCanceller;
 
         public SequentialLipAnimator(ILipMorpher morpher)
@@ -39,7 +38,7 @@ namespace Mochineko.FacialExpressions.LipSync
                     break;
                 }
 
-                currentSample = frame.sample;
+                morpher.MorphInto(frame.sample);
 
                 var result = await RelentUniTask.Delay(
                     TimeSpan.FromSeconds(frame.durationSeconds),
@@ -53,19 +52,8 @@ namespace Mochineko.FacialExpressions.LipSync
             }
             
             morpher.Reset();
-            currentSample = new LipSample(Viseme.sil, 0f);
 
             animationCanceller = null;
-        }
-
-        public void Update()
-        {
-            morpher.MorphInto(currentSample);
-        }
-
-        public void Reset()
-        {
-            morpher.Reset();
         }
     }
 }

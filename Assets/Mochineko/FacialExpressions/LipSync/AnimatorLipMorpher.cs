@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Mochineko.FacialExpressions.LipSync
 {
     /// <summary>
-    /// An implementation of <see cref="ILipMorpher"/> that uses <see cref="Animator"/>.
+    /// An implementation of <see cref="ILipMorpher"/> to morph lip by <see cref="Animator"/>.
     /// </summary>
     public sealed class AnimatorLipMorpher : ILipMorpher
     {

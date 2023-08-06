@@ -25,16 +25,31 @@ namespace Mochineko.FacialExpressions.Samples
     // ReSharper disable once InconsistentNaming
     internal sealed class SampleForVoiceVoxAndVRM : MonoBehaviour
     {
-        [SerializeField] private string path = string.Empty;
-        [SerializeField] private string text = string.Empty;
-        [SerializeField] private int speakerID;
-        [SerializeField] private AudioSource? audioSource = null;
-        [SerializeField] private bool skipSpeechSynthesis = false;
-        [SerializeField] private BasicEmotion basicEmotion = BasicEmotion.Neutral;
-        [SerializeField] private float emotionWeight = 1f;
-        [SerializeField] private float emotionFollowingTime = 1f;
+        [SerializeField]
+        private string path = string.Empty;
 
-        private ILipAnimator? lipAnimator;
+        [SerializeField]
+        private string text = string.Empty;
+
+        [SerializeField]
+        private int speakerID;
+
+        [SerializeField]
+        private AudioSource? audioSource = null;
+
+        [SerializeField]
+        private bool skipSpeechSynthesis = false;
+
+        [SerializeField]
+        private BasicEmotion basicEmotion = BasicEmotion.Neutral;
+
+        [SerializeField]
+        private float emotionWeight = 1f;
+
+        [SerializeField]
+        private float emotionFollowingTime = 1f;
+
+        private FollowingLipAnimator lipAnimator;
         private IEyelidAnimator? eyelidAnimator;
         private ExclusiveFollowingEmotionAnimator<BasicEmotion>? emotionAnimator;
         private AudioClip? audioClip;
@@ -68,9 +83,11 @@ namespace Mochineko.FacialExpressions.Samples
             var eyelidMorpher = new VRMEyelidMorpher(instance.Runtime.Expression);
             eyelidAnimator = new SequentialEyelidAnimator(eyelidMorpher);
 
-            var eyelidFrames = ProbabilisticEyelidAnimationGenerator.Generate(
-                Eyelid.Both,
-                blinkCount: 20);
+            var eyelidFrames = ProbabilisticEyelidAnimationGenerator
+                .Generate(
+                    Eyelid.Both,
+                    blinkCount: 20
+                );
 
             eyelidAnimator.AnimateAsync(
                     eyelidFrames,
@@ -149,70 +166,27 @@ namespace Mochineko.FacialExpressions.Samples
 
             await UniTask.SwitchToThreadPool();
 
-            AudioQuery audioQuery;
-            var createQueryResult = await queryCreationPolicy.ExecuteAsync(
-                async innerCancellationToken => await QueryCreationAPI.CreateQueryAsync(
-                    HttpClientPool.PooledClient,
-                    text: text,
-                    speaker: speakerID,
-                    coreVersion: null,
-                    cancellationToken: innerCancellationToken),
-                cancellationToken);
-            if (createQueryResult is IUncertainSuccessResult<AudioQuery> createQuerySuccess)
-            {
-                audioQuery = createQuerySuccess.Result;
-                Debug.Log(
-                    $"[VOICEVOX_API.Samples] Succeeded to create query from text:{text} -> {JsonConvert.SerializeObject(audioQuery)}.");
-            }
-            else if (createQueryResult is IUncertainRetryableResult<AudioQuery> createQueryRetryable)
-            {
-                Debug.LogError(
-                    $"[VOICEVOX_API.Samples] Failed to create query because -> {createQueryRetryable.Message}.");
-                return;
-            }
-            else if (createQueryResult is IUncertainFailureResult<AudioQuery> createQueryFailure)
-            {
-                Debug.LogError(
-                    $"[VOICEVOX_API.Samples] Failed to create query because -> {createQueryFailure.Message}.");
-                return;
-            }
-            else
-            {
-                throw new UncertainResultPatternMatchException(nameof(createQueryResult));
-            }
+            var audioQuery = (await queryCreationPolicy.ExecuteAsync(
+                    async innerCancellationToken => await QueryCreationAPI.CreateQueryAsync(
+                        HttpClientPool.PooledClient,
+                        text: text,
+                        speaker: speakerID,
+                        coreVersion: null,
+                        cancellationToken: innerCancellationToken),
+                    cancellationToken)
+                ).Unwrap();
 
             // Synthesize speech from AudioQuery by VOICEVOX synthesis API.
-            Stream stream;
-            var synthesisResult = await synthesisPolicy.ExecuteAsync(
-                async innerCancellationToken => await SynthesisAPI.SynthesizeAsync(
-                    HttpClientPool.PooledClient,
-                    audioQuery: audioQuery,
-                    speaker: speakerID,
-                    enableInterrogativeUpspeak: null,
-                    coreVersion: null,
-                    cancellationToken: innerCancellationToken),
-                cancellationToken);
-            if (synthesisResult is IUncertainSuccessResult<Stream> synthesisSuccess)
-            {
-                stream = synthesisSuccess.Result;
-                Debug.Log($"[VOICEVOX_API.Samples] Succeeded to synthesis speech from text:{text}.");
-            }
-            else if (synthesisResult is IUncertainRetryableResult<Stream> synthesisRetryable)
-            {
-                Debug.LogError(
-                    $"[VOICEVOX_API.Samples] Failed to synthesis speech because -> {synthesisRetryable.Message}.");
-                return;
-            }
-            else if (synthesisResult is IUncertainFailureResult<Stream> synthesisFailure)
-            {
-                Debug.LogError(
-                    $"[VOICEVOX_API.Samples] Failed to synthesis speech because -> {synthesisFailure.Message}.");
-                return;
-            }
-            else
-            {
-                throw new UncertainResultPatternMatchException(nameof(synthesisResult));
-            }
+            var stream = (await synthesisPolicy.ExecuteAsync(
+                    async innerCancellationToken => await SynthesisAPI.SynthesizeAsync(
+                        HttpClientPool.PooledClient,
+                        audioQuery: audioQuery,
+                        speaker: speakerID,
+                        enableInterrogativeUpspeak: null,
+                        coreVersion: null,
+                        cancellationToken: innerCancellationToken),
+                    cancellationToken)
+                ).Unwrap();
 
             if (!skipSpeechSynthesis)
             {
@@ -247,14 +221,15 @@ namespace Mochineko.FacialExpressions.Samples
                 audioSource.PlayDelayed(0.1f);
             }
 
-            var lipFrames = AudioQueryConverter.ConvertToSequentialAnimationFrames(audioQuery);
+            var lipFrames = AudioQueryConverter
+                .ConvertToSequentialAnimationFrames(audioQuery);
 
             await UniTask.Delay(
                 TimeSpan.FromSeconds(0.1f),
-                cancellationToken:cancellationToken);
+                cancellationToken: cancellationToken);
 
             lipAnimator
-                ?.AnimateAsync(lipFrames, cancellationToken)
+                .SetTargetAsync(lipFrames, cancellationToken)
                 .Forget();
         }
 

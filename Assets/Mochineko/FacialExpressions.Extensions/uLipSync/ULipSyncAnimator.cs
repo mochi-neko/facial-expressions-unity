@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Mochineko.FacialExpressions.Extensions.uLipSync
 {
-    public sealed class ULipSyncAnimator : IDisposable
+    public sealed class ULipSyncAnimator : IFramewiseLipAnimator, IDisposable
     {
         private readonly FollowingLipAnimator followingLipAnimator;
         private readonly global::uLipSync.uLipSync uLipSync;

@@ -9,9 +9,9 @@ using UnityEngine;
 namespace Mochineko.FacialExpressions.LipSync
 {
     /// <summary>
-    /// A lip animator that animates lip by following target weights.
+    /// A framewise lip animator that animates lip by following target weights.
     /// </summary>
-    public sealed class FollowingLipAnimator : ILipAnimator
+    public sealed class FollowingLipAnimator : IFramewiseLipAnimator
     {
         private readonly ILipMorpher morpher;
         private readonly float dt;
@@ -32,7 +32,7 @@ namespace Mochineko.FacialExpressions.LipSync
             this.followingTime = followingTime;
         }
 
-        public async UniTask AnimateAsync(
+        public async UniTask SetTargetAsync(
             IEnumerable<LipAnimationFrame> frames,
             CancellationToken cancellationToken)
         {
