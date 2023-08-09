@@ -24,7 +24,7 @@ namespace Mochineko.FacialExpressions.Samples
         [SerializeField] private uLipSync.uLipSync? uLipSync = null;
 
         private ULipSyncAnimator? lipAnimator;
-        private IEyelidAnimator? eyelidAnimator;
+        private IDisposable? eyelidAnimationLoop;
         private ExclusiveFollowingEmotionAnimator<BasicEmotion>? emotionAnimator;
 
         private async void Start()
@@ -48,18 +48,13 @@ namespace Mochineko.FacialExpressions.Samples
             var followingLipAnimator = new FollowingLipAnimator(lipMorpher, followingTime: 0.15f);
             lipAnimator = new ULipSyncAnimator(followingLipAnimator, uLipSync);
 
-            var eyelidMorpher = new VRMEyelidMorpher(instance.Runtime.Expression);
-            eyelidAnimator = new SequentialEyelidAnimator(eyelidMorpher);
-
             var eyelidFrames = ProbabilisticEyelidAnimationGenerator.Generate(
                 Eyelid.Both,
                 blinkCount: 20);
 
-            eyelidAnimator.AnimateAsync(
-                    eyelidFrames,
-                    loop: true,
-                    this.GetCancellationTokenOnDestroy())
-                .Forget();
+            var eyelidMorpher = new VRMEyelidMorpher(instance.Runtime.Expression);
+            var eyelidAnimator = new SequentialEyelidAnimator(eyelidMorpher);
+            eyelidAnimationLoop = new LoopEyelidAnimator(eyelidAnimator, eyelidFrames);
 
             var emotionMorpher = new VRMEmotionMorpher(instance.Runtime.Expression);
             emotionAnimator = new ExclusiveFollowingEmotionAnimator<BasicEmotion>(
@@ -70,13 +65,13 @@ namespace Mochineko.FacialExpressions.Samples
         private void Update()
         {
             lipAnimator?.Update();
-            eyelidAnimator?.Update();
             emotionAnimator?.Update();
         }
 
         private void OnDestroy()
         {
             lipAnimator?.Dispose();
+            eyelidAnimationLoop?.Dispose();
         }
 
         private static async UniTask<Vrm10Instance> LoadVRMAsync(

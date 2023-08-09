@@ -47,15 +47,15 @@ namespace Mochineko.FacialExpressions.Samples
 
         [SerializeField]
         private float emotionFollowingTime = 1f;
-        
+
         [SerializeField]
         private float volumeSmoothTime = 0.1f;
-        
+
         [SerializeField]
         private float volumeMultiplier = 1f;
 
         private VolumeBasedLipAnimator? lipAnimator;
-        private IEyelidAnimator? eyelidAnimator;
+        private IDisposable? eyelidAnimationLoop;
         private ExclusiveFollowingEmotionAnimator<BasicEmotion>? emotionAnimator;
         private AudioClip? audioClip;
 
@@ -96,18 +96,13 @@ namespace Mochineko.FacialExpressions.Samples
                 volumeMultiplier: volumeMultiplier,
                 samplesCount: 1024);
 
-            var eyelidMorpher = new VRMEyelidMorpher(instance.Runtime.Expression);
-            eyelidAnimator = new SequentialEyelidAnimator(eyelidMorpher);
-
             var eyelidFrames = ProbabilisticEyelidAnimationGenerator.Generate(
                 Eyelid.Both,
                 blinkCount: 20);
 
-            eyelidAnimator.AnimateAsync(
-                    eyelidFrames,
-                    loop: true,
-                    this.GetCancellationTokenOnDestroy())
-                .Forget();
+            var eyelidMorpher = new VRMEyelidMorpher(instance.Runtime.Expression);
+            var eyelidAnimator = new SequentialEyelidAnimator(eyelidMorpher);
+            eyelidAnimationLoop = new LoopEyelidAnimator(eyelidAnimator, eyelidFrames);
 
             var emotionMorpher = new VRMEmotionMorpher(instance.Runtime.Expression);
             emotionAnimator = new ExclusiveFollowingEmotionAnimator<BasicEmotion>(
@@ -117,7 +112,6 @@ namespace Mochineko.FacialExpressions.Samples
 
         private void Update()
         {
-            eyelidAnimator?.Update();
             lipAnimator?.Update();
             emotionAnimator?.Update();
         }
@@ -129,6 +123,7 @@ namespace Mochineko.FacialExpressions.Samples
                 Destroy(audioClip);
                 audioClip = null;
             }
+            eyelidAnimationLoop?.Dispose();
         }
 
         private static async UniTask<Vrm10Instance> LoadVRMAsync(

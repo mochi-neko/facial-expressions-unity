@@ -11,7 +11,7 @@ namespace Mochineko.FacialExpressions.LipSync
     public interface ISequentialLipAnimator
     {
         /// <summary>
-        /// Animates lip sequentially.
+        /// Animates lip sequentially by a collection of <see cref="LipAnimationFrame"/>.
         /// </summary>
         /// <param name="frames">Target frames.</param>
         /// <param name="cancellationToken">Cancellation token.</param>

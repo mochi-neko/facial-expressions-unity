@@ -8,47 +8,38 @@ using Mochineko.Relent.Extensions.UniTask;
 namespace Mochineko.FacialExpressions.Blink
 {
     /// <summary>
-    /// A simple implementation of <see cref="IEyelidAnimator"/> that animates eyelid sequentially by frame collection.
+    /// A sequential eyelid animator that animates eyelid sequentially by frame collection.
     /// </summary>
-    public sealed class SequentialEyelidAnimator : IEyelidAnimator
+    public sealed class SequentialEyelidAnimator : ISequentialEyelidAnimator
     {
         private readonly IEyelidMorpher morpher;
-        
-        private EyelidSample currentSample = new(Eyelid.Both, 0f);
-        private CancellationTokenSource? cancellationTokenSource;
 
         public SequentialEyelidAnimator(IEyelidMorpher morpher)
         {
             this.morpher = morpher;
         }
-        
+
         public async UniTask AnimateAsync(
             IEnumerable<EyelidAnimationFrame> frames,
-            bool loop,
             CancellationToken cancellationToken)
         {
-            cancellationTokenSource?.Cancel();
-            cancellationTokenSource = CancellationTokenSource
-                .CreateLinkedTokenSource(cancellationToken);
-            
             morpher.Reset();
-            currentSample = new EyelidSample(Eyelid.Both, 0f);
 
-            while (loop && !cancellationTokenSource.IsCancellationRequested)
+            while (!cancellationToken.IsCancellationRequested)
             {
                 foreach (var frame in frames)
                 {
-                    if (cancellationTokenSource.IsCancellationRequested)
+                    if (cancellationToken.IsCancellationRequested)
                     {
                         break;
                     }
-                    
-                    currentSample = frame.sample;
+
+                    morpher.MorphInto(frame.sample);
 
                     var result = await RelentUniTask.Delay(
                         TimeSpan.FromSeconds(frame.durationSeconds),
                         delayTiming: PlayerLoopTiming.Update,
-                        cancellationToken: cancellationTokenSource.Token);
+                        cancellationToken: cancellationToken);
 
                     // Cancelled
                     if (result.Failure)
@@ -58,19 +49,6 @@ namespace Mochineko.FacialExpressions.Blink
                 }
             }
 
-            morpher.Reset();
-            currentSample = new EyelidSample(Eyelid.Both, 0f);
-
-            cancellationTokenSource = null;
-        }
-
-        public void Update()
-        {
-            morpher.MorphInto(currentSample);
-        }
-
-        public void Reset()
-        {
             morpher.Reset();
         }
     }
