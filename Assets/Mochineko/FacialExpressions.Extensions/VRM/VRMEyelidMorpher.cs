@@ -21,6 +21,10 @@ namespace Mochineko.FacialExpressions.Extensions.VRM
                 [Eyelid.Right] = ExpressionKey.BlinkRight,
             };
 
+        /// <summary>
+        /// Create an eyelid morpher for VRM models.
+        /// </summary>
+        /// <param name="expression">Target expression of VRM instance.</param>
         public VRMEyelidMorpher(Vrm10RuntimeExpression expression)
         {
             this.expression = expression;

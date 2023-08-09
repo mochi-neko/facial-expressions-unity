@@ -1,5 +1,6 @@
 ﻿#nullable enable
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using Cysharp.Threading.Tasks;
@@ -46,7 +47,18 @@ namespace Mochineko.FacialExpressions.Samples
 
             var lipMorpher = new VRMLipMorpher(instance.Runtime.Expression);
             var followingLipAnimator = new FollowingLipAnimator(lipMorpher, followingTime: 0.15f);
-            lipAnimator = new ULipSyncAnimator(followingLipAnimator, uLipSync);
+            lipAnimator = new ULipSyncAnimator(
+                followingLipAnimator,
+                uLipSync,
+                phonomeMap: new Dictionary<string, Viseme>
+                {
+                    ["A"] = Viseme.aa,
+                    ["I"] = Viseme.ih,
+                    ["U"] = Viseme.ou,
+                    ["E"] = Viseme.E,
+                    ["O"] = Viseme.oh,
+                    ["N"] = Viseme.sil,
+                });
 
             var eyelidFrames = ProbabilisticEyelidAnimationGenerator.Generate(
                 Eyelid.Both,
@@ -56,7 +68,18 @@ namespace Mochineko.FacialExpressions.Samples
             var eyelidAnimator = new SequentialEyelidAnimator(eyelidMorpher);
             eyelidAnimationLoop = new LoopEyelidAnimator(eyelidAnimator, eyelidFrames);
 
-            var emotionMorpher = new VRMEmotionMorpher(instance.Runtime.Expression);
+            var emotionMorpher = new VRMEmotionMorpher<BasicEmotion>(
+                instance.Runtime.Expression,
+                keyMap: new Dictionary<BasicEmotion, ExpressionKey>
+                {
+                    [BasicEmotion.Neutral] = ExpressionKey.Neutral,
+                    [BasicEmotion.Happy] = ExpressionKey.Happy,
+                    [BasicEmotion.Sad] = ExpressionKey.Sad,
+                    [BasicEmotion.Angry] = ExpressionKey.Angry,
+                    [BasicEmotion.Fearful] = ExpressionKey.Neutral,
+                    [BasicEmotion.Surprised] = ExpressionKey.Surprised,
+                    [BasicEmotion.Disgusted] = ExpressionKey.Neutral,
+                });
             emotionAnimator = new ExclusiveFollowingEmotionAnimator<BasicEmotion>(
                 emotionMorpher,
                 followingTime: emotionFollowingTime);

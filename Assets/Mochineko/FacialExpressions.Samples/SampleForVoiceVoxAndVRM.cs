@@ -1,5 +1,6 @@
 #nullable enable
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using Cysharp.Threading.Tasks;
@@ -90,7 +91,18 @@ namespace Mochineko.FacialExpressions.Samples
             var eyelidAnimator = new SequentialEyelidAnimator(eyelidMorpher);
             eyelidAnimationLoop = new LoopEyelidAnimator(eyelidAnimator, eyelidFrames);
 
-            var emotionMorpher = new VRMEmotionMorpher(instance.Runtime.Expression);
+            var emotionMorpher = new VRMEmotionMorpher<BasicEmotion>(
+                instance.Runtime.Expression,
+                keyMap: new Dictionary<BasicEmotion, ExpressionKey>
+                {
+                    [BasicEmotion.Neutral] = ExpressionKey.Neutral,
+                    [BasicEmotion.Happy] = ExpressionKey.Happy,
+                    [BasicEmotion.Sad] = ExpressionKey.Sad,
+                    [BasicEmotion.Angry] = ExpressionKey.Angry,
+                    [BasicEmotion.Fearful] = ExpressionKey.Neutral,
+                    [BasicEmotion.Surprised] = ExpressionKey.Surprised,
+                    [BasicEmotion.Disgusted] = ExpressionKey.Neutral,
+                });
             emotionAnimator = new ExclusiveFollowingEmotionAnimator<BasicEmotion>(
                 emotionMorpher,
                 followingTime: emotionFollowingTime);
