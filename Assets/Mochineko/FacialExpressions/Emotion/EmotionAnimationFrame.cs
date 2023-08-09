@@ -2,24 +2,26 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace Mochineko.FacialExpressions.Blink
+namespace Mochineko.FacialExpressions.Emotion
 {
     /// <summary>
-    /// A frame of eyelid animation.
+    /// Frame of emotion animation.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
-    public readonly struct EyelidAnimationFrame : IEquatable<EyelidAnimationFrame>
+    public readonly struct EmotionAnimationFrame<TEmotion>
+        : IEquatable<EmotionAnimationFrame<TEmotion>>
+        where TEmotion : Enum
     {
         /// <summary>
-        /// Sample of eyelid morphing at frame.
+        /// Sample of emotion morphing.
         /// </summary>
-        public readonly EyelidSample sample;
+        public readonly EmotionSample<TEmotion> sample;
         /// <summary>
-        /// Duration time of frame in seconds.
+        /// Duration of this frame in seconds.
         /// </summary>
         public readonly float durationSeconds;
 
-        public EyelidAnimationFrame(EyelidSample sample, float durationSeconds)
+        public EmotionAnimationFrame(EmotionSample<TEmotion> sample, float durationSeconds)
         {
             if (durationSeconds < 0f)
             {
@@ -30,7 +32,7 @@ namespace Mochineko.FacialExpressions.Blink
             this.durationSeconds = durationSeconds;
         }
 
-        public bool Equals(EyelidAnimationFrame other)
+        public bool Equals(EmotionAnimationFrame<TEmotion> other)
         {
             return sample.Equals(other.sample)
                    && durationSeconds.Equals(other.durationSeconds);
@@ -38,7 +40,7 @@ namespace Mochineko.FacialExpressions.Blink
 
         public override bool Equals(object? obj)
         {
-            return obj is EyelidAnimationFrame other && Equals(other);
+            return obj is EmotionAnimationFrame<TEmotion> other && Equals(other);
         }
 
         public override int GetHashCode()

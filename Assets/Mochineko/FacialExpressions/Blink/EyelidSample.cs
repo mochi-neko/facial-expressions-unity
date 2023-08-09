@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 namespace Mochineko.FacialExpressions.Blink
 {
     /// <summary>
-    /// Sample of eyelid morphing.
+    /// A sample of eyelid morphing.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public readonly struct EyelidSample : IEquatable<EyelidSample>
@@ -25,7 +25,7 @@ namespace Mochineko.FacialExpressions.Blink
             {
                 throw new ArgumentOutOfRangeException(nameof(weight));
             }
-            
+
             this.eyelid = eyelid;
             this.weight = weight;
         }

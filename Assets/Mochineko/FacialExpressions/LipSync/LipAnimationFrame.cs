@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 namespace Mochineko.FacialExpressions.LipSync
 {
     /// <summary>
-    /// Frame of lip animation.
+    /// A frame of lip animation.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public readonly struct LipAnimationFrame : IEquatable<LipAnimationFrame>
@@ -25,7 +25,7 @@ namespace Mochineko.FacialExpressions.LipSync
             {
                 throw new ArgumentOutOfRangeException(nameof(durationSeconds));
             }
-            
+
             this.sample = sample;
             this.durationSeconds = durationSeconds;
         }

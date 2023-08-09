@@ -49,7 +49,7 @@ namespace Mochineko.FacialExpressions.Samples
         [SerializeField]
         private float emotionFollowingTime = 1f;
 
-        private FollowingLipAnimator lipAnimator;
+        private FollowingLipAnimator? lipAnimator;
         private IDisposable? eyelidAnimationLoop;
         private ExclusiveFollowingEmotionAnimator<BasicEmotion>? emotionAnimator;
         private AudioClip? audioClip;
@@ -148,6 +148,11 @@ namespace Mochineko.FacialExpressions.Samples
             if (audioSource == null)
             {
                 Debug.LogError(audioSource);
+                return;
+            }
+
+            if (lipAnimator == null)
+            {
                 return;
             }
 

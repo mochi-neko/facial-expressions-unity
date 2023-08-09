@@ -6,10 +6,10 @@ using UnityEngine;
 namespace Mochineko.FacialExpressions.Emotion
 {
     /// <summary>
-    /// An emotion animator that animates emotion by following target weights.
+    /// An emotion animator that animates emotion by following target weights exclusively.
     /// </summary>
     public sealed class ExclusiveFollowingEmotionAnimator<TEmotion>
-        : IEmotionAnimator<TEmotion>
+        : IFramewiseEmotionAnimator<TEmotion>
         where TEmotion : Enum
     {
         private readonly IEmotionMorpher<TEmotion> morpher;
@@ -26,6 +26,10 @@ namespace Mochineko.FacialExpressions.Emotion
             this.morpher.Reset();
         }
 
+        /// <summary>
+        /// Emotes.
+        /// </summary>
+        /// <param name="sample"></param>
         public void Emote(EmotionSample<TEmotion> sample)
         {
             if (targets.ContainsKey(sample.emotion))

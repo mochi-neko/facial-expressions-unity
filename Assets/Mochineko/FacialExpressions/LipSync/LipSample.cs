@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 namespace Mochineko.FacialExpressions.LipSync
 {
     /// <summary>
-    /// Sample of lip morphing.
+    /// A sample of lip morphing.
     /// </summary>
     [StructLayout(LayoutKind.Sequential)]
     public readonly struct LipSample : IEquatable<LipSample>
@@ -18,7 +18,7 @@ namespace Mochineko.FacialExpressions.LipSync
         /// Weight of morphing.
         /// </summary>
         public readonly float weight;
-        
+
         public LipSample(Viseme viseme, float weight)
         {
             if (weight is < 0f or > 1f)
