@@ -39,16 +39,22 @@ namespace Mochineko.FacialExpressions.LipSync
 
         public float GetWeightOf(Viseme viseme)
         {
-            throw new System.NotImplementedException();
+            if (indexMap.TryGetValue(viseme, out var index))
+            {
+                return skinnedMeshRenderer.GetBlendShapeWeight(index);
+            }
+            else
+            {
+                return 0f;
+            }
         }
 
         public void Reset()
         {
-            MorphInto(new LipSample(Viseme.aa, 0f));
-            MorphInto(new LipSample(Viseme.ih, 0f));
-            MorphInto(new LipSample(Viseme.ou, 0f));
-            MorphInto(new LipSample(Viseme.E, 0f));
-            MorphInto(new LipSample(Viseme.oh, 0f));
+            foreach (var pair in indexMap)
+            {
+                skinnedMeshRenderer.SetBlendShapeWeight(pair.Value, 0f);
+            }
         }
     }
 }

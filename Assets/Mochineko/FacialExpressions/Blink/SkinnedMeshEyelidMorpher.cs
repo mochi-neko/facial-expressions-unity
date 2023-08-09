@@ -47,9 +47,10 @@ namespace Mochineko.FacialExpressions.Blink
 
         public void Reset()
         {
-            MorphInto(new EyelidSample(Eyelid.Both, 0f));
-            MorphInto(new EyelidSample(Eyelid.Left, 0f));
-            MorphInto(new EyelidSample(Eyelid.Right, 0f));
+            foreach (var pair in indexMap)
+            {
+                skinnedMeshRenderer.SetBlendShapeWeight(pair.Value, 0f);
+            }
         }
     }
 }

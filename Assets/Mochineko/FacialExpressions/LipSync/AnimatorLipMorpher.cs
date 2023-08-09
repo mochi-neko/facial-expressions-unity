@@ -51,11 +51,10 @@ namespace Mochineko.FacialExpressions.LipSync
 
         public void Reset()
         {
-            MorphInto(new LipSample(Viseme.aa, 0f));
-            MorphInto(new LipSample(Viseme.ih, 0f));
-            MorphInto(new LipSample(Viseme.ou, 0f));
-            MorphInto(new LipSample(Viseme.E, 0f));
-            MorphInto(new LipSample(Viseme.oh, 0f));
+            foreach (var pair in idMap)
+            {
+                animator.SetFloat(pair.Value, 0f);
+            }
         }
     }
 }
