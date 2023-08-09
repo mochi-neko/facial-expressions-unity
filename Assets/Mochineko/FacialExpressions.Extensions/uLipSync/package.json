@@ -1,6 +1,6 @@
 {
   "name": "com.mochineko.facial-expressions.extensions.ulipsync",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "displayName": "Facial Expressions extension for uLipSync",
   "description": "Facial expressions extension for uLipSync.",
   "unity": "2021.3",

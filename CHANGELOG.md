@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.3] - 2023-08-09
+
+### Added
+- Add implementation of emotion morpher for `Animator` and `SkinnedMeshRenderer`.
+
+### Fixed
+- Improve reset logic of implementations for `Animator` and `SkinnedMeshRenderer`.
+- Fix not implemented method of `SkinnedMeshLipMorpher`.
+
 ## [0.4.2] - 2023-08-09
 
 ### Fixed
