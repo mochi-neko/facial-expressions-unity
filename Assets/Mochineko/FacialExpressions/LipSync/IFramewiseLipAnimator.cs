@@ -10,7 +10,7 @@ namespace Mochineko.FacialExpressions.LipSync
         /// Updates animation.
         /// </summary>
         void Update();
-        
+
         /// <summary>
         /// Resets animation to default.
         /// </summary>

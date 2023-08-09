@@ -4,20 +4,20 @@ using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 
-namespace Mochineko.FacialExpressions.Blink
+namespace Mochineko.FacialExpressions.LipSync
 {
     /// <summary>
-    /// Loops animation of eyelid for any <see cref="ISequentialEyelidAnimator"/>.
+    /// Loops animation of lip for any <see cref="ISequentialLipAnimator"/>.
     /// </summary>
-    public sealed class LoopEyelidAnimator : IDisposable
+    public sealed class LoopLipAnimator : IDisposable
     {
-        private readonly ISequentialEyelidAnimator animator;
-        private readonly IEnumerable<EyelidAnimationFrame> frames;
+        private readonly ISequentialLipAnimator animator;
+        private readonly IEnumerable<LipAnimationFrame> frames;
         private readonly CancellationTokenSource cancellationTokenSource = new();
 
-        public LoopEyelidAnimator(
-            ISequentialEyelidAnimator animator,
-            IEnumerable<EyelidAnimationFrame> frames)
+        public LoopLipAnimator(
+            ISequentialLipAnimator animator,
+            IEnumerable<LipAnimationFrame> frames)
         {
             this.animator = animator;
             this.frames = frames;
