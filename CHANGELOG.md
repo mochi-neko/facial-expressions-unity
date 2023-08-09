@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.2] - 2023-08-09
+
+### Fixed
+- Fix accessibility of some composition from internal to public.
+
 ## [0.4.1] - 2023-08-09
 
 ### Added

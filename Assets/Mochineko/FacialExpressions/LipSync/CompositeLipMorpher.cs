@@ -6,7 +6,7 @@ namespace Mochineko.FacialExpressions.LipSync
     /// <summary>
     /// Composition of some <see cref="Mochineko.FacialExpressions.LipSync.ILipMorpher"/>s.
     /// </summary>
-    internal sealed class CompositeLipMorpher : ILipMorpher
+    public sealed class CompositeLipMorpher : ILipMorpher
     {
         private readonly IReadOnlyList<ILipMorpher> morphers;
 

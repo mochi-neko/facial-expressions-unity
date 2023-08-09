@@ -8,7 +8,7 @@ namespace Mochineko.FacialExpressions.Emotion
     /// Composition of some <see cref="Mochineko.FacialExpressions.Emotion.IEmotionMorpher{TEmotion}"/>s.
     /// </summary>
     /// <typeparam name="TEmotion"></typeparam>
-    internal sealed class CompositeEmotionMorpher<TEmotion>
+    public sealed class CompositeEmotionMorpher<TEmotion>
         : IEmotionMorpher<TEmotion>
         where TEmotion : Enum
     {
