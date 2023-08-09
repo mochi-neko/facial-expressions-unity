@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.4.1] - 2023-08-09
+
+### Added
+- Add compositions of each eyelid, lip and emotion morphers.
+
 ## [0.4.0] - 2023-08-09
 
 ### Added
