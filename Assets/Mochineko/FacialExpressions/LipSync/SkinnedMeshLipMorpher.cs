@@ -29,7 +29,7 @@ namespace Mochineko.FacialExpressions.LipSync
         {
             if (indexMap.TryGetValue(sample.viseme, out var index))
             {
-                skinnedMeshRenderer.SetBlendShapeWeight(index, sample.weight);
+                skinnedMeshRenderer.SetBlendShapeWeight(index, sample.weight * 100f);
             }
             else if (sample.viseme is Viseme.sil)
             {
@@ -41,7 +41,7 @@ namespace Mochineko.FacialExpressions.LipSync
         {
             if (indexMap.TryGetValue(viseme, out var index))
             {
-                return skinnedMeshRenderer.GetBlendShapeWeight(index);
+                return skinnedMeshRenderer.GetBlendShapeWeight(index) / 100f;
             }
             else
             {

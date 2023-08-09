@@ -29,7 +29,7 @@ namespace Mochineko.FacialExpressions.Blink
         {
             if (indexMap.TryGetValue(sample.eyelid, out var index))
             {
-                skinnedMeshRenderer.SetBlendShapeWeight(index, sample.weight);
+                skinnedMeshRenderer.SetBlendShapeWeight(index, sample.weight * 100f);
             }
         }
 
@@ -37,7 +37,7 @@ namespace Mochineko.FacialExpressions.Blink
         {
             if (indexMap.TryGetValue(eyelid, out var index))
             {
-                return skinnedMeshRenderer.GetBlendShapeWeight(index);
+                return skinnedMeshRenderer.GetBlendShapeWeight(index) / 100f;
             }
             else
             {

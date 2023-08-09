@@ -33,7 +33,7 @@ namespace Mochineko.FacialExpressions.Emotion
         {
             if (indexMap.TryGetValue(sample.emotion, out var index))
             {
-                skinnedMeshRenderer.SetBlendShapeWeight(index, sample.weight);
+                skinnedMeshRenderer.SetBlendShapeWeight(index, sample.weight * 100f);
             }
         }
 
@@ -41,7 +41,7 @@ namespace Mochineko.FacialExpressions.Emotion
         {
             if (indexMap.TryGetValue(emotion, out var index))
             {
-                return skinnedMeshRenderer.GetBlendShapeWeight(index);
+                return skinnedMeshRenderer.GetBlendShapeWeight(index) / 100f;
             }
             else
             {
