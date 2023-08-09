@@ -18,6 +18,15 @@ namespace Mochineko.FacialExpressions.LipSync
         private float currentVolume = 0f;
         private float velocity = 0f;
 
+        /// <summary>
+        /// Creates a new instance of <see cref="VolumeBasedLipAnimator"/>.
+        /// </summary>
+        /// <param name="morpher">Target morpher.</param>
+        /// <param name="viseme">Target viseme to morph.</param>
+        /// <param name="audioSource">Audio source to get volume.</param>
+        /// <param name="smoothTime">Smooth time of volume.</param>
+        /// <param name="volumeMultiplier">Multiplier of volume.</param>
+        /// <param name="samplesCount">Count of samples to get volume at each frame.</param>
         public VolumeBasedLipAnimator(
             ILipMorpher morpher,
             Viseme viseme,
@@ -26,6 +35,27 @@ namespace Mochineko.FacialExpressions.LipSync
             float volumeMultiplier = 1f,
             int samplesCount = 1024)
         {
+            if (smoothTime <= 0f)
+            {
+                throw new System.ArgumentOutOfRangeException(
+                    nameof(smoothTime), smoothTime,
+                    "Smooth time must be greater than 0.");
+            }
+
+            if (volumeMultiplier <= 0f)
+            {
+                throw new System.ArgumentOutOfRangeException(
+                    nameof(volumeMultiplier), volumeMultiplier,
+                    "Volume multiplier must be greater than 0.");
+            }
+
+            if (samplesCount <= 0)
+            {
+                throw new System.ArgumentOutOfRangeException(
+                    nameof(samplesCount), samplesCount,
+                    "Samples count must be greater than 0.");
+            }
+
             this.morpher = morpher;
             this.viseme = viseme;
             this.audioSource = audioSource;
@@ -34,17 +64,11 @@ namespace Mochineko.FacialExpressions.LipSync
             this.audioSamples = new float[samplesCount];
         }
 
-        /// <summary>
-        /// Updates lip animation by current audio voluem.
-        /// </summary>
         public void Update()
         {
             morpher.MorphInto(GetSample());
         }
 
-        /// <summary>
-        /// Resets lip animation.
-        /// </summary>
         public void Reset()
         {
             morpher.Reset();

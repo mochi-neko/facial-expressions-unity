@@ -17,10 +17,23 @@ namespace Mochineko.FacialExpressions.Emotion
         private readonly Dictionary<TEmotion, EmotionSample<TEmotion>> targets = new();
         private readonly Dictionary<TEmotion, float> velocities = new();
 
+        /// <summary>
+        /// Creates a new instance of <see cref="ExclusiveFollowingEmotionAnimator{TEmotion}"/>.
+        /// </summary>
+        /// <param name="morpher">Target morpher.</param>
+        /// <param name="followingTime">Following time to smooth dump.</param>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
         public ExclusiveFollowingEmotionAnimator(
             IEmotionMorpher<TEmotion> morpher,
             float followingTime)
         {
+            if (followingTime <= 0f)
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(followingTime), followingTime,
+                    "Following time must be greater than 0.");
+            }
+
             this.morpher = morpher;
             this.followingTime = followingTime;
             this.morpher.Reset();

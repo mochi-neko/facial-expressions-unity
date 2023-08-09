@@ -7,29 +7,33 @@ using UnityEngine;
 
 namespace Mochineko.FacialExpressions.Extensions.uLipSync
 {
+    /// <summary>
+    /// An implementation of <see cref="IFramewiseLipAnimator"/> for <see cref="global::uLipSync.uLipSync"/>.
+    /// </summary>
     public sealed class ULipSyncAnimator : IFramewiseLipAnimator, IDisposable
     {
         private readonly FollowingLipAnimator followingLipAnimator;
         private readonly global::uLipSync.uLipSync uLipSync;
+        private readonly IReadOnlyDictionary<string, Viseme> phonomeMap;
         private readonly IDisposable disposable;
 
-        private static readonly IReadOnlyDictionary<string, Viseme> phonomeMap
-            = new Dictionary<string, Viseme>
-            {
-                ["A"] = Viseme.aa,
-                ["I"] = Viseme.ih,
-                ["U"] = Viseme.ou,
-                ["E"] = Viseme.E,
-                ["O"] = Viseme.oh,
-            };
-
+        /// <summary>
+        /// Creates a new instance of <see cref="ULipSyncAnimator"/>.
+        /// </summary>
+        /// <param name="followingLipAnimator">Wrapped <see cref="FollowingLipAnimator"/>.</param>
+        /// <param name="uLipSync">Target <see cref="global::uLipSync.uLipSync"/>.</param>
+        /// <param name="phonomeMap">Map of phoneme to viseme.</param>
+        /// <param name="volumeThreshold">Threshold of volume.</param>
+        /// <param name="verbose">Whether to output log.</param>
         public ULipSyncAnimator(
             FollowingLipAnimator followingLipAnimator,
             global::uLipSync.uLipSync uLipSync,
+            IReadOnlyDictionary<string, Viseme> phonomeMap,
             float volumeThreshold = 0.01f,
             bool verbose = false)
         {
             this.followingLipAnimator = followingLipAnimator;
+            this.phonomeMap = phonomeMap;
             this.uLipSync = uLipSync;
 
             this.disposable = this.uLipSync

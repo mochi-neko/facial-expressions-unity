@@ -12,6 +12,11 @@ namespace Mochineko.FacialExpressions.Blink
         private readonly SkinnedMeshRenderer skinnedMeshRenderer;
         private readonly IReadOnlyDictionary<Eyelid, int> indexMap;
 
+        /// <summary>
+        /// Creates a new instance of <see cref="SkinnedMeshEyelidMorpher"/>.
+        /// </summary>
+        /// <param name="skinnedMeshRenderer">Target renderer.</param>
+        /// <param name="indexMap">Map of eyelid and blend shape index.</param>
         public SkinnedMeshEyelidMorpher(
             SkinnedMeshRenderer skinnedMeshRenderer,
             IReadOnlyDictionary<Eyelid, int> indexMap)

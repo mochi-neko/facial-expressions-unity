@@ -16,6 +16,10 @@ namespace Mochineko.FacialExpressions.LipSync
 
         private CancellationTokenSource? animationCanceller;
 
+        /// <summary>
+        /// Creates a new instance of <see cref="SequentialLipAnimator"/>.
+        /// </summary>
+        /// <param name="morpher">Target morpher.</param>
         public SequentialLipAnimator(ILipMorpher morpher)
         {
             this.morpher = morpher;
@@ -28,7 +32,7 @@ namespace Mochineko.FacialExpressions.LipSync
             animationCanceller?.Cancel();
             animationCanceller = CancellationTokenSource
                 .CreateLinkedTokenSource(cancellationToken);
-            
+
             morpher.Reset();
 
             foreach (var frame in frames)
@@ -43,14 +47,14 @@ namespace Mochineko.FacialExpressions.LipSync
                 var result = await RelentUniTask.Delay(
                     TimeSpan.FromSeconds(frame.durationSeconds),
                     cancellationToken: animationCanceller.Token);
-                
+
                 // Cancelled
                 if (result.Failure)
                 {
                     break;
                 }
             }
-            
+
             morpher.Reset();
 
             animationCanceller = null;

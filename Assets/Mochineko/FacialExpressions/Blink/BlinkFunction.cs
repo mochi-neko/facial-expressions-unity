@@ -19,7 +19,7 @@ namespace Mochineko.FacialExpressions.Blink
             => t <= tc
                 ? LinearClosingWeight(t, tc)
                 : LinearOpeningWeight(t, tc);
-        
+
         /// <summary>
         /// Weight of closing blink approximated by linear function.
         /// </summary>
@@ -31,17 +31,23 @@ namespace Mochineko.FacialExpressions.Blink
         {
             if (t is < 0f or > 1f)
             {
-                throw new ArgumentOutOfRangeException(nameof(t));
+                throw new ArgumentOutOfRangeException(
+                    nameof(t), t,
+                    "t must be between 0 and 1.");
             }
 
             if (tc is < 0f or > 1f)
             {
-                throw new ArgumentOutOfRangeException(nameof(tc));
+                throw new ArgumentOutOfRangeException(
+                    nameof(tc), tc,
+                    "tc must be between 0 and 1.");
             }
 
             if (t > tc)
             {
-                throw new ArgumentOutOfRangeException(nameof(t));
+                throw new ArgumentOutOfRangeException(
+                    nameof(t), t,
+                    "t must be less than tc.");
             }
 
             return t / tc;
@@ -58,17 +64,23 @@ namespace Mochineko.FacialExpressions.Blink
         {
             if (t is < 0f or > 1f)
             {
-                throw new ArgumentOutOfRangeException(nameof(t));
+                throw new ArgumentOutOfRangeException(
+                    nameof(t), t,
+                    "t must be between 0 and 1.");
             }
 
             if (tc is < 0f or > 1f)
             {
-                throw new ArgumentOutOfRangeException(nameof(tc));
+                throw new ArgumentOutOfRangeException(
+                    nameof(tc), tc,
+                    "tc must be between 0 and 1.");
             }
 
             if (t < tc)
             {
-                throw new ArgumentOutOfRangeException(nameof(t));
+                throw new ArgumentOutOfRangeException(
+                    nameof(t), t,
+                    "t must be greater than tc.");
             }
 
             return (1f - t) / (1f - tc);
@@ -99,22 +111,30 @@ namespace Mochineko.FacialExpressions.Blink
         {
             if (t is < 0f or > 1f)
             {
-                throw new ArgumentOutOfRangeException(nameof(t));
+                throw new ArgumentOutOfRangeException(
+                    nameof(t), t,
+                    "t must be between 0 and 1.");
             }
 
             if (tc is < 0f or > 1f)
             {
-                throw new ArgumentOutOfRangeException(nameof(tc));
+                throw new ArgumentOutOfRangeException(
+                    nameof(tc), tc,
+                    "tc must be between 0 and 1.");
             }
 
             if (t > tc)
             {
-                throw new ArgumentOutOfRangeException(nameof(t));
+                throw new ArgumentOutOfRangeException(
+                    nameof(t), t,
+                    "t must be less than tc.");
             }
 
             if (beta <= 0f)
             {
-                throw new ArgumentOutOfRangeException(nameof(beta));
+                throw new ArgumentOutOfRangeException(
+                    nameof(beta), beta,
+                    "beta must be greater than 0.");
             }
 
             // f(t) = \frac{e^{\beta t} - 1}{e^{\beta t_c} - 1} \ & \ (0 \le t \le t_c)
@@ -133,22 +153,30 @@ namespace Mochineko.FacialExpressions.Blink
         {
             if (t is < 0f or > 1f)
             {
-                throw new ArgumentOutOfRangeException(nameof(t));
+                throw new ArgumentOutOfRangeException(
+                    nameof(t), t,
+                    "t must be between 0 and 1.");
             }
 
             if (tc is < 0f or > 1f)
             {
-                throw new ArgumentOutOfRangeException(nameof(tc));
+                throw new ArgumentOutOfRangeException(
+                    nameof(tc), tc,
+                    "tc must be between 0 and 1.");
             }
 
             if (t < tc)
             {
-                throw new ArgumentOutOfRangeException(nameof(t));
+                throw new ArgumentOutOfRangeException(
+                    nameof(t), t,
+                    "t must be greater than tc.");
             }
 
             if (a is < -1f or > 1f)
             {
-                throw new ArgumentOutOfRangeException(nameof(a));
+                throw new ArgumentOutOfRangeException(
+                    nameof(a), a,
+                    "a must be between -1 and 1.");
             }
 
             // f(t) = - a (t - t_c)(1 - t) + \frac{1 - t}{1 - t_c} \ & \ (t_c \le t \le 1)

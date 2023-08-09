@@ -14,16 +14,25 @@ namespace Mochineko.FacialExpressions.Blink
         /// Target eyelid.
         /// </summary>
         public readonly Eyelid eyelid;
+
         /// <summary>
         /// Weight of morphing.
         /// </summary>
         public readonly float weight;
 
+        /// <summary>
+        /// Creates a new instance of <see cref="EyelidSample"/>.
+        /// </summary>
+        /// <param name="eyelid">Target eyelid.</param>
+        /// <param name="weight">Weight of morphing.</param>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
         public EyelidSample(Eyelid eyelid, float weight)
         {
             if (weight is < 0f or > 1f)
             {
-                throw new ArgumentOutOfRangeException(nameof(weight));
+                throw new ArgumentOutOfRangeException(
+                    nameof(weight), weight,
+                    "Weight must be between 0 and 1.");
             }
 
             this.eyelid = eyelid;

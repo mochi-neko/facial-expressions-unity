@@ -14,7 +14,9 @@ namespace Mochineko.FacialExpressions.Blink
         {
             if (min > max)
             {
-                throw new ArgumentOutOfRangeException(nameof(min));
+                throw new ArgumentOutOfRangeException(
+                    nameof(min), min,
+                    "Min must be less than or equal to max.");
             }
 
             return Mathf.Clamp(

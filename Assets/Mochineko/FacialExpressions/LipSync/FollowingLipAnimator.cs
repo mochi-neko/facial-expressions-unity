@@ -22,11 +22,33 @@ namespace Mochineko.FacialExpressions.LipSync
 
         private CancellationTokenSource? animationCanceller;
 
+        /// <summary>
+        /// Creates a new instance of <see cref="FollowingLipAnimator"/>.
+        /// </summary>
+        /// <param name="morpher">Target morpher.</param>
+        /// <param name="initialFollowingVelocity">Initial velocity of smooth damp.</param>
+        /// <param name="followingTime">Time of smooth damp.</param>
         public FollowingLipAnimator(
             ILipMorpher morpher,
             float initialFollowingVelocity = 0.1f,
             float followingTime = 0.005f)
         {
+            if (initialFollowingVelocity < 0f)
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(initialFollowingVelocity),
+                    initialFollowingVelocity,
+                    "Initial velocity must be greater than or equal to 0.");
+            }
+
+            if (followingTime < 0f)
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(followingTime),
+                    followingTime,
+                    "Following time must be greater than or equal to 0.");
+            }
+
             this.morpher = morpher;
             this.initialFollowingVelocity = initialFollowingVelocity;
             this.followingTime = followingTime;

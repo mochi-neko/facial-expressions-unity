@@ -18,7 +18,9 @@ namespace Mochineko.FacialExpressions.LipSync
         {
             if (phase is < 0f or > 1f)
             {
-                throw new ArgumentOutOfRangeException(nameof(phase));
+                throw new ArgumentOutOfRangeException(
+                    nameof(phase), phase,
+                    "Phase must be between 0 and 1.");
             }
 
             return 3f * phase * phase - 2f * phase * phase * phase;
