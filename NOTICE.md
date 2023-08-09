@@ -1,6 +1,6 @@
 # NOTICE
 
-This repository use these 3rd party libraries via UnityPackageManager.
+This repository depends of following 3rd party libraries via Unity Package Manager.
 
 ## Newtonsoft Json
 
@@ -331,7 +331,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
 
-
 ## UniVRM
 
 https://github.com/vrm-c/UniVRM
@@ -514,3 +513,4 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
+

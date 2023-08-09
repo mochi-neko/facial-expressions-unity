@@ -1,7 +1,7 @@
 {
   "name": "com.mochineko.facial-expressions.extensions.voicevox",
-  "version": "0.3.3",
-  "displayName": "Facial Expressions / VOICEVOX",
+  "version": "0.4.0",
+  "displayName": "Facial Expressions extension for VOICEVOX",
   "description": "Facial expressions extension for VOICEVOX.",
   "unity": "2021.3",
   "author": {
