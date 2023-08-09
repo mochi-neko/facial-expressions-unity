@@ -10,6 +10,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.4.3] - 2023-08-09
 
 ### Added
+- Add option to separate both blend shape for `SkinnedMeshEyelidMorpher`.
+
+### Fixed
+- Fix scale of weight for blend shape in `SkinnedMeshRenderer`.
+
+## [0.4.3] - 2023-08-09
+
+### Added
 - Add implementation of emotion morpher for `Animator` and `SkinnedMeshRenderer`.
 
 ### Fixed
